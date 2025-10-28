@@ -3,7 +3,7 @@ import { Menu, Search, ShoppingCart, BaggageClaim, Zap } from "lucide-react";
 
 export default function Navbar() {
     return (
-        <header className=" bg-[#074E46] mt-4 mx-10 text-white py-4 px-8 flex items-center justify-between shadow-md rounded-xl">
+        <header className=" bg-[#074E46] mt-4 mx-18 text-white py-4 px-8 flex items-center justify-between shadow-md rounded-xl">
             {/* Left: Logo + Menu */}
             <div className="flex items-center gap-2">
                 <button className="p-2 hover:bg-white/10 rounded-full">

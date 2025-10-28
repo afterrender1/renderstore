@@ -1,9 +1,11 @@
 "use client"
 import Image from "next/image";
+import GroceryCategories from "./GroceryCategories";
 
 export default function Hero() {
   return (
-    <section className=" bg-[#074E46] mt-5 mx-10 text-white rounded-b-[30%] rounded-t-4xl flex flex-col md:flex-row items-center justify-between px-6 md:px-12 lg:px-20 py-10 md:py-16 relative overflow-hidden">
+<>
+    <section className=" bg-[#074E46] mt-5 mx-18 text-white rounded-b-[30%] rounded-t-4xl flex flex-col md:flex-row items-center justify-between px-6 md:px-12 lg:px-20 py-10 md:py-16 relative overflow-hidden">
       
       {/* Background pattern (optional subtle shapes) */}
 
@@ -33,5 +35,9 @@ export default function Hero() {
         />
       </div>
     </section>
+
+<GroceryCategories/>
+    
+</>
   );
 }
