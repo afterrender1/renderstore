@@ -63,16 +63,24 @@ export default function Cart({ isOpen, onClose }: CartProps) {
             {/* Cart Items */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
               {cartItems.length === 0 ? (
-             <div className="">
-                 <p className=" text-gray-500 mt-20 text-lg flex flex-col justify-center h-80 ">
-                 <div className="text-3xl flex justify-center font-medium"   style={{ fontFamily: "var(--font-fredoka)" }}>
-                   Your cart is empty 
-                 </div>
-                 <div className="flex justify-center items-center">
-                   <Image height={200} width={200} alt="Empty cart illustration" src="/images/emptycart.png"/>
-                 </div>
-                </p>
-             </div>
+          <div className="text-gray-500 mt-20 text-lg flex flex-col justify-center h-80">
+  <div
+    className="text-3xl flex justify-center font-medium"
+    style={{ fontFamily: "var(--font-fredoka)" }}
+  >
+    Your cart is empty
+  </div>
+
+  <div className="flex justify-center items-center mt-4">
+    <Image
+      height={200}
+      width={200}
+      alt="Empty cart illustration"
+      src="/images/emptycart.png"
+    />
+  </div>
+</div>
+
               ) : (
                 cartItems.map((item) => (
                   <motion.div
