@@ -15,6 +15,7 @@ type Product = {
   thumbnail: string;
   price: number;
   category: string;
+  description: string,
 };
 
 export default function Hero() {
@@ -43,15 +44,16 @@ export default function Hero() {
   };
 
   const handleAdd = (product: Product) => {
-    dispatch(
-      addToCart({
-        id: product.id,
-        title: product.title,
-        price: product.price,
-        thumbnail: product.thumbnail,
-        quantity: 1,
-      })
-    );
+  dispatch(
+  addToCart({
+    id: product.id,
+    title: product.title,
+    price: product.price,
+    thumbnail: product.thumbnail,
+    description: product.description, // ✅ now allowed
+  })
+);
+
   };
 
   const handleIncrease = (id: number) => dispatch(increaseQty(id));

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Trash2 } from "lucide-react";
+import { X, Trash2, BaggageClaim } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,10 +46,11 @@ export default function Cart({ isOpen, onClose }: CartProps) {
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b bg-[#074E46] text-white">
               <h2
-                className="text-2xl font-bold tracking-wide"
+                className="text-2xl font-bold tracking-wide flex justify-center items-center gap-3"
                 style={{ fontFamily: "var(--font-fredoka)" }}
               >
-                🛒 Your Cart
+                             <BaggageClaim color="#BBEB75" />
+ Your Cart 
               </h2>
               <button
                 onClick={onClose}
@@ -62,9 +63,16 @@ export default function Cart({ isOpen, onClose }: CartProps) {
             {/* Cart Items */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
               {cartItems.length === 0 ? (
-                <p className="text-center text-gray-500 mt-20 text-lg">
-                  Your cart is empty 🛒
+             <div className="">
+                 <p className=" text-gray-500 mt-20 text-lg flex flex-col justify-center h-80 ">
+                 <div className="text-3xl flex justify-center font-medium"   style={{ fontFamily: "var(--font-fredoka)" }}>
+                   Your cart is empty 
+                 </div>
+                 <div className="flex justify-center items-center">
+                   <Image height={200} width={200} alt="Empty cart illustration" src="/images/emptycart.png"/>
+                 </div>
                 </p>
+             </div>
               ) : (
                 cartItems.map((item) => (
                   <motion.div
