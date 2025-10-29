@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Fredoka , Montserrat } from "next/font/google";
+import Providers from "@/app/Providers";
 
 const fredoka = Fredoka({
   subsets: ["latin"],
@@ -28,7 +29,7 @@ export default function RootLayout({
       <body
         className={`${fredoka.variable} ${monserrat.variable}`}
       >
-        {children}
+      <Providers>{children}</Providers>
       </body>
     </html>
   );

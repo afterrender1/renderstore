@@ -4,32 +4,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Trash2 } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-
-type CartItem = {
-  id: number;
-  title: string;
-  thumbnail: string;
-  price: number;
-  quantity: number;
-};
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
+import { increaseQty, decreaseQty, removeFromCart } from "@/app/redux/CartSlice";
 
 type CartProps = {
   isOpen: boolean;
   onClose: () => void;
-  cartItems: CartItem[];
-  onIncrease: (id: number) => void;
-  onDecrease: (id: number) => void;
-  onRemove: (id: number) => void;
 };
 
-export default function Cart({
-  isOpen,
-  onClose,
-  cartItems,
-  onIncrease,
-  onDecrease,
-  onRemove,
-}: CartProps) {
+export default function Cart({ isOpen, onClose }: CartProps) {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: RootState) => state.cart.items);
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -81,8 +67,13 @@ export default function Cart({
                 </p>
               ) : (
                 cartItems.map((item) => (
-                  <div
+                  <motion.div
                     key={item.id}
+                    layout
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
                     className="flex items-center justify-between bg-gray-50 rounded-xl p-3"
                   >
                     <div className="flex items-center gap-3">
@@ -106,7 +97,7 @@ export default function Cart({
                     <div className="flex flex-col items-end gap-2">
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => onDecrease(item.id)}
+                          onClick={() => dispatch(decreaseQty(item.id))}
                           className="px-2 py-1 bg-gray-200 rounded-md hover:bg-gray-300"
                         >
                           -
@@ -115,20 +106,20 @@ export default function Cart({
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => onIncrease(item.id)}
+                          onClick={() => dispatch(increaseQty(item.id))}
                           className="px-2 py-1 bg-[#C7F464] text-[#074E46] rounded-md hover:bg-[#b9ec5d]"
                         >
                           +
                         </button>
                       </div>
                       <button
-                        onClick={() => onRemove(item.id)}
+                        onClick={() => dispatch(removeFromCart(item.id))}
                         className="text-red-500 hover:text-red-600"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
-                  </div>
+                  </motion.div>
                 ))
               )}
             </div>
@@ -139,12 +130,13 @@ export default function Cart({
                 <span>Total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
-              <button
+              <motion.button
+                whileTap={{ scale: 0.95 }}
                 className="w-full bg-[#074E46] text-white py-3 rounded-lg font-semibold hover:bg-[#0a5a4f] transition"
                 style={{ fontFamily: "var(--font-fredoka)" }}
               >
                 Checkout →
-              </button>
+              </motion.button>
             </div>
           </motion.div>
         </>

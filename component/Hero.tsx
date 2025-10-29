@@ -1,10 +1,13 @@
 "use client";
 import Image from "next/image";
 import GroceryCategories from "./GroceryCategories";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
+import { addToCart, increaseQty, decreaseQty } from "@/app/redux/CartSlice";
 
 type Product = {
   id: number;
@@ -16,8 +19,8 @@ type Product = {
 
 export default function Hero() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [quantities, setQuantities] = useState<Record<number, number>>({});
-  const reversedProducts = [...products].reverse();
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: RootState) => state.cart.items);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -25,41 +28,39 @@ export default function Hero() {
         const response = await fetch("https://dummyjson.com/products");
         const data = await response.json();
         setProducts(data.products);
-        console.log(data.products);
-        
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
-
     fetchProducts();
   }, []);
 
-  const increase = (id: number) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: (prev[id] || 0) + 1,
-    }));
+  const getQuantity = (id: number) => {
+    const item = cartItems.find((item) => item.id === id);
+    return item ? item.quantity : 0;
   };
 
-  const decrease = (id: number) => {
-    setQuantities((prev) => {
-      const newQty = (prev[id] || 0) - 1;
-      if (newQty <= 0) {
-        const updated = { ...prev };
-        delete updated[id];
-        return updated;
-      }
-      return { ...prev, [id]: newQty };
-    });
+  const handleAdd = (product: Product) => {
+    dispatch(
+      addToCart({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        thumbnail: product.thumbnail,
+        quantity: 1,
+      })
+    );
   };
+
+  const handleIncrease = (id: number) => dispatch(increaseQty(id));
+  const handleDecrease = (id: number) => dispatch(decreaseQty(id));
 
   return (
     <>
       {/* 🛒 Hero Section */}
       <section
         style={{ clipPath: "ellipse(150% 90% at 50% 0%)" }}
-        className="bg-[#074E46] mt-5 mx-18 text-white rounded-t-4xl flex flex-col md:flex-row items-center justify-between px-6 md:px-12 lg:px-20 py-10 md:py-16 relative overflow-hidden"
+        className="bg-[#074E46] mt-5 text-white mx-18 rounded-t-4xl flex flex-col md:flex-row items-center justify-between px-6 md:px-12 lg:px-20 py-10 md:py-16 relative overflow-hidden"
       >
         <div className="relative z-10 md:w-1/2 space-y-4">
           <h1
@@ -72,8 +73,8 @@ export default function Hero() {
             className="text-white/80 text-sm md:text-base max-w-md"
             style={{ fontFamily: "var(--font-fredoka)" }}
           >
-            Get organic produce and sustainably sourced groceries delivered at up to{" "}
-            <span className="font-semibold text-white">4% off grocery</span>.
+            Get organic produce and sustainably sourced groceries delivered at up
+            to <span className="font-semibold text-white">4% off grocery</span>.
           </p>
           <button
             style={{ fontFamily: "var(--font-fredoka)" }}
@@ -108,8 +109,8 @@ export default function Hero() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          {reversedProducts.map((product) => {
-            const quantity = quantities[product.id] || 0;
+          {[...products].reverse().map((product) => {
+            const quantity = getQuantity(product.id);
             return (
               <div
                 key={product.id}
@@ -161,8 +162,8 @@ export default function Hero() {
                         exit={{ scale: 0.8, opacity: 0 }}
                         transition={{ duration: 0.2 }}
                         onClick={(e) => {
-                          e.stopPropagation(); // 👈 prevent link click
-                          increase(product.id);
+                          e.stopPropagation();
+                          handleAdd(product);
                         }}
                         style={{ clipPath: "ellipse(130% 90% at 50% 0%)" }}
                         className="cursor-pointer bg-[#F0F4EA] px-20 py-3 hover:bg-gray-200 transition-colors rounded-lg flex items-center justify-center font-semibold text-gray-700"
@@ -182,7 +183,7 @@ export default function Hero() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            decrease(product.id);
+                            handleDecrease(product.id);
                           }}
                           className="cursor-pointer text-gray-700 font-bold text-lg hover:scale-110 transition"
                         >
@@ -194,7 +195,7 @@ export default function Hero() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            increase(product.id);
+                            handleIncrease(product.id);
                           }}
                           className="cursor-pointer text-gray-700 font-bold text-lg hover:scale-110 transition"
                         >

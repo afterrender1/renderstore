@@ -18,6 +18,7 @@ import {
   Minus,
 } from "lucide-react";
 import Navbar from "@/component/Navbar";
+import {LoaderCircle} from "lucide-react"
 
 type Product = {
   id: number;
@@ -62,8 +63,8 @@ export default function ProductPage() {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-screen text-gray-500 text-lg">
-        Loading product...
+      <div className="flex text-2xl justify-center items-center h-screen font-bold text-gray-500 ">
+      <LoaderCircle size={50} color="#074E46" className="animate-spin font-bold"/> <span  style={{ fontFamily: "var(--font-fredoka)" }} className="text-4xl text-[#074E46]">  Fetching Product</span>
       </div>
     );
 
@@ -85,12 +86,12 @@ export default function ProductPage() {
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="min-h-screen bg-gray-50 pb-32 mt-4 px-6 md:px-16 lg:px-24 relative"
+      className="min-h-screen bg-gray-50 pb-32 mt-4 px-6 md:px-16 lg:px-18 relative"
     >
       {/* Header Section */}
       <section
         style={{ clipPath: "ellipse(150% 100% at 80% 0%)" }}
-        className="bg-[#074E46] text-white rounded-t-4xl flex flex-col md:flex-row items-center justify-between px-6 md:px-12 lg:px-20 py-10 md:py-16 mb-10"
+        className="bg-[#074E46] text-white rounded-t-4xl flex flex-col  md:flex-row items-center justify-between px-6 md:px-12 lg:px-20 py-10 md:py-16 mb-10"
       >
         <div className="relative z-10 md:w-1/2 space-y-4">
           <h1
