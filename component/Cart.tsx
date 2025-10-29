@@ -41,28 +41,28 @@ export default function Cart({ isOpen, onClose }: CartProps) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 120, damping: 20 }}
-            className="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white z-50 shadow-2xl flex flex-col rounded-l-3xl overflow-hidden"
+            className="fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white z-50 shadow-2xl flex flex-col rounded-l-3xl overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-5 border-b bg-[#074E46] text-white">
+            <div className="flex items-center justify-between p-6 border-b bg-[#074E46] text-white">
               <h2
-                className="text-xl font-bold"
+                className="text-2xl font-bold tracking-wide"
                 style={{ fontFamily: "var(--font-fredoka)" }}
               >
-                Your Cart
+                🛒 Your Cart
               </h2>
               <button
                 onClick={onClose}
                 className="p-2 rounded-full hover:bg-white/10 transition"
               >
-                <X className="w-6 h-6" />
+                <X className="w-7 h-7" />
               </button>
             </div>
 
             {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
               {cartItems.length === 0 ? (
-                <p className="text-center text-gray-500 mt-20">
+                <p className="text-center text-gray-500 mt-20 text-lg">
                   Your cart is empty 🛒
                 </p>
               ) : (
@@ -74,49 +74,52 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.2 }}
-                    className="flex items-center justify-between bg-gray-50 rounded-xl p-3"
+                    className="flex items-center justify-between bg-gray-50 rounded-2xl p-4 shadow-sm hover:shadow-md transition"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-start gap-4">
                       <Image
                         src={item.thumbnail}
                         alt={item.title}
-                        width={60}
-                        height={60}
-                        className="rounded-lg object-cover"
+                        width={90}
+                        height={90}
+                        className="rounded-xl object-cover"
                       />
-                      <div>
-                        <h3 className="font-semibold text-gray-800 text-sm">
+                      <div className="flex flex-col">
+                        <h3 className="font-bold text-gray-800 text-lg leading-tight">
                           {item.title}
                         </h3>
-                        <p className="text-gray-500 text-xs">
+                        <p className="text-gray-500 text-sm mt-1 line-clamp-2 max-w-[200px]">
+                          {item.description || "No description available."}
+                        </p>
+                        <p className="text-gray-800 mt-2 font-semibold text-base">
                           ${item.price} × {item.quantity}
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex flex-col items-end gap-2">
-                      <div className="flex items-center gap-2">
+                    <div className="flex flex-col items-end gap-3">
+                      <div className="flex items-center gap-3">
                         <button
                           onClick={() => dispatch(decreaseQty(item.id))}
-                          className="px-2 py-1 bg-gray-200 rounded-md hover:bg-gray-300"
+                          className="px-3 py-1 bg-gray-200 text-lg rounded-md hover:bg-gray-300"
                         >
                           -
                         </button>
-                        <span className="text-gray-700 font-semibold">
+                        <span className="text-gray-800 font-semibold text-lg min-w-[24px] text-center">
                           {item.quantity}
                         </span>
                         <button
                           onClick={() => dispatch(increaseQty(item.id))}
-                          className="px-2 py-1 bg-[#C7F464] text-[#074E46] rounded-md hover:bg-[#b9ec5d]"
+                          className="px-3 py-1 bg-[#C7F464] text-[#074E46] text-lg rounded-md hover:bg-[#b9ec5d]"
                         >
                           +
                         </button>
                       </div>
                       <button
                         onClick={() => dispatch(removeFromCart(item.id))}
-                        className="text-red-500 hover:text-red-600"
+                        className="text-red-500 hover:text-red-600 text-sm flex items-center gap-1"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-4 h-4" /> Remove
                       </button>
                     </div>
                   </motion.div>
@@ -125,17 +128,17 @@ export default function Cart({ isOpen, onClose }: CartProps) {
             </div>
 
             {/* Footer */}
-            <div className="p-5 border-t bg-white shadow-inner">
-              <div className="flex justify-between mb-4 text-lg font-semibold text-gray-800">
+            <div className="p-6 border-t bg-white shadow-inner">
+              <div className="flex justify-between mb-4 text-xl font-bold text-gray-800">
                 <span>Total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                className="w-full bg-[#074E46] text-white py-3 rounded-lg font-semibold hover:bg-[#0a5a4f] transition"
+                className="w-full bg-[#074E46] text-white py-4 rounded-xl font-semibold text-lg hover:bg-[#0a5a4f] transition"
                 style={{ fontFamily: "var(--font-fredoka)" }}
               >
-                Checkout →
+                Proceed to Checkout →
               </motion.button>
             </div>
           </motion.div>
