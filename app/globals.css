@@ -2,4 +2,5 @@
 
 body{
   background-color: #F4F6F6;
+  box-sizing: border-box;
 }
