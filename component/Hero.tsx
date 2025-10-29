@@ -131,6 +131,7 @@ export default function Hero() {
                     alt={product.title}
                     width={200}
                     height={200}
+                    draggable={false}
                     className="object-contain rounded-xl"
                   />
                 </Link>
