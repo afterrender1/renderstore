@@ -1,20 +1,30 @@
 "use client";
 import { Menu, Search, ShoppingCart, BaggageClaim, Zap } from "lucide-react";
+import Cart from "./Cart";
+import { useState } from "react";
+import Link from "next/link";
+
 
 export default function Navbar() {
+    const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState<any[]>([]);
     return (
         <header className=" bg-[#074E46] mt-4 mx-18 text-white py-4 px-8 flex items-center justify-between shadow-md rounded-xl">
             {/* Left: Logo + Menu */}
+           
+           
             <div className="flex items-center gap-2">
                 <button className="p-2 hover:bg-white/10 rounded-full">
                     <Menu size={22} />
                 </button>
+                <Link href={"/"}>
                 <div className="flex items-center gap-1">
                     <span className="text-xl">
                         <BaggageClaim color="#BBEB75" />
                     </span>
                     <span className="text-lg font-semibold">RenderStore</span>
                 </div>
+               </Link>
             </div>
 
             {/* Middle: Search bar */}
@@ -37,12 +47,28 @@ export default function Navbar() {
                 </p>
 
                 {/* Cart */}
-                <button className="relative p-2 cursor-pointer rounded-full bg-white/90">
-                    <ShoppingCart size={22} color="black" />
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-                        9
-                    </span>
-                </button>
+  <button
+  onClick={() => setIsCartOpen(true)}
+  className="relative bg-white text-black p-3 rounded-full shadow-md transition-all hover:text-gray-800 hover:bg-[#b2d16f] cursor-pointer duration-300 flex items-center justify-center"
+>
+  <ShoppingCart size={20} />
+
+  {/* Cart count badge */}
+  {cartItems.length > 0 && (
+    <span className="absolute -top-1 -right-1 bg-[#074E46] text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+      {cartItems.length}
+    </span>
+  )}
+</button>
+
+      <Cart
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        cartItems={cartItems}
+        onIncrease={(id) => console.log("Increase", id)}
+        onDecrease={(id) => console.log("Decrease", id)}
+        onRemove={(id) => console.log("Remove", id)}
+      />
 
                 {/* User avatar */}
                 <img

@@ -3,7 +3,8 @@ import Image from "next/image";
 import GroceryCategories from "./GroceryCategories";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Minus } from "lucide-react"
+import { Plus, Minus } from "lucide-react";
+import Link from "next/link";
 
 type Product = {
   id: number;
@@ -24,6 +25,8 @@ export default function Hero() {
         const response = await fetch("https://dummyjson.com/products");
         const data = await response.json();
         setProducts(data.products);
+        console.log(data.products);
+        
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -31,7 +34,6 @@ export default function Hero() {
 
     fetchProducts();
   }, []);
-
 
   const increase = (id: number) => {
     setQuantities((prev) => ({
@@ -54,11 +56,9 @@ export default function Hero() {
 
   return (
     <>
-      {/* Hero Section */}
+      {/* 🛒 Hero Section */}
       <section
-        style={{
-          clipPath: "ellipse(150% 90% at 50% 0%)",
-        }}
+        style={{ clipPath: "ellipse(150% 90% at 50% 0%)" }}
         className="bg-[#074E46] mt-5 mx-18 text-white rounded-t-4xl flex flex-col md:flex-row items-center justify-between px-6 md:px-12 lg:px-20 py-10 md:py-16 relative overflow-hidden"
       >
         <div className="relative z-10 md:w-1/2 space-y-4">
@@ -83,10 +83,9 @@ export default function Hero() {
           </button>
         </div>
 
-        {/* Right image */}
         <div className="relative z-10 mt-10 md:mt-0 md:w-1/2 flex justify-center">
           <Image
-            src="/images/finalgbag.png"
+            src="/images/bag.png"
             alt="Grocery bag"
             width={500}
             height={500}
@@ -97,8 +96,8 @@ export default function Hero() {
 
       <GroceryCategories />
 
-      {/* Product Cards Section */}
-      <section className="px-6 md:px-12 lg:px-20 py-10 ">
+      {/* 🧺 Product Cards */}
+      <section className="px-6 md:px-12 lg:px-20 py-10">
         <div className="flex justify-between items-center mb-6">
           <h2
             className="text-3xl font-bold text-gray-800"
@@ -108,19 +107,20 @@ export default function Hero() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 ">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {reversedProducts.map((product) => {
             const quantity = quantities[product.id] || 0;
             return (
               <div
-                style={{
-                  clipPath: "ellipse(150% 97% at 50% 0%)",
-                }}
                 key={product.id}
-                className="bg-white rounded-t-xl w-70 rounded-b-[10%]  hover:shadow-md transition flex flex-col items-center pb-7"
+                className="bg-white rounded-t-xl w-70 rounded-b-[10%] hover:shadow-md transition flex flex-col items-center pb-7"
+                style={{ clipPath: "ellipse(150% 97% at 50% 0%)" }}
               >
-                {/* Product Image */}
-                <div className="relative w-full flex justify-center items-start cursor-pointer ">
+                {/* Product Image + Link */}
+                <Link
+                  href={`/product/${product.id}`}
+                  className="relative w-full flex justify-center items-start cursor-pointer"
+                >
                   <Image
                     src={product.thumbnail}
                     alt={product.title}
@@ -128,7 +128,7 @@ export default function Hero() {
                     height={200}
                     className="object-contain rounded-xl"
                   />
-                </div>
+                </Link>
 
                 {/* Info */}
                 <h3
@@ -138,19 +138,19 @@ export default function Hero() {
                   {product.title}
                 </h3>
                 <p
+                  className="text-gray-500 text-center mb-2 capitalize"
                   style={{ fontFamily: "var(--font-fredoka)" }}
-
-                  className="text-gray-500  text-center mb-2 capitalize" >
+                >
                   {product.category}
                 </p>
                 <span
+                  className="text-3xl font-bold text-gray-800 mb-3"
                   style={{ fontFamily: "var(--font-montserrat)" }}
-
-                  className="text-3xl font-bold text-gray-800 mb-3">
+                >
                   {product.price}$
                 </span>
 
-                {/* Animated Add Button */}
+                {/* Animated Add / Minus Button */}
                 <div className="flex justify-center w-full">
                   <AnimatePresence mode="wait">
                     {quantity === 0 ? (
@@ -160,14 +160,14 @@ export default function Hero() {
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.8, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        onClick={() => increase(product.id)}
-                        style={{
-                          clipPath: "ellipse(130% 90% at 50% 0%)",
+                        onClick={(e) => {
+                          e.stopPropagation(); // 👈 prevent link click
+                          increase(product.id);
                         }}
+                        style={{ clipPath: "ellipse(130% 90% at 50% 0%)" }}
                         className="cursor-pointer bg-[#F0F4EA] px-20 py-3 hover:bg-gray-200 transition-colors rounded-lg flex items-center justify-center font-semibold text-gray-700"
                       >
                         <Plus />
-
                       </motion.button>
                     ) : (
                       <motion.div
@@ -176,26 +176,29 @@ export default function Hero() {
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.8, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        style={{
-                          clipPath: "ellipse(130% 90% at 50% 0%)",
-                        }}
+                        style={{ clipPath: "ellipse(130% 90% at 50% 0%)" }}
                         className="cursor-pointer bg-[#B9EC5D] px-10 py-3 flex items-center justify-center gap-4 rounded-lg"
                       >
                         <button
-                          onClick={() => decrease(product.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            decrease(product.id);
+                          }}
                           className="cursor-pointer text-gray-700 font-bold text-lg hover:scale-110 transition"
                         >
                           <Minus />
-
                         </button>
                         <span className="text-gray-800 font-semibold">
                           {quantity}
                         </span>
                         <button
-                          onClick={() => increase(product.id)}
-                          className="cursor-pointer  text-gray-700 font-bold text-lg hover:scale-110 transition"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            increase(product.id);
+                          }}
+                          className="cursor-pointer text-gray-700 font-bold text-lg hover:scale-110 transition"
                         >
-                          <Plus className="text-bold" />
+                          <Plus />
                         </button>
                       </motion.div>
                     )}
