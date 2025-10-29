@@ -58,7 +58,7 @@ export default function GroceryCategories() {
   ];
 
   return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-6 mx-40 py-7" style={{ fontFamily: "var(--font-fredoka)" }}>
+    <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-6 mx-40 py-7 select-none" style={{ fontFamily: "var(--font-fredoka)" }}>
       {categories.map((cat) => (
         <div
           key={cat.title}

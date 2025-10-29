@@ -121,7 +121,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                         >
                           -
                         </button>
-                        <span className="text-gray-800 font-semibold text-lg min-w-[24px] text-center">
+                        <span className="text-gray-800 font-semibold text-lg min-w-6 text-center">
                           {item.quantity}
                         </span>
                         <button

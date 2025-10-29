@@ -64,7 +64,7 @@ export default function Hero() {
       {/* 🛒 Hero Section */}
       <section
         style={{ clipPath: "ellipse(150% 90% at 50% 0%)" }}
-        className="bg-[#074E46] mt-5 text-white mx-18 rounded-t-4xl flex flex-col md:flex-row items-center justify-between px-6 md:px-12 lg:px-20 py-10 md:py-16 relative overflow-hidden"
+        className="bg-[#074E46] select-none mt-5 text-white mx-18 rounded-t-4xl flex flex-col md:flex-row items-center justify-between px-6 md:px-12 lg:px-20 py-10 md:py-16 relative overflow-hidden"
       >
         <div className="relative z-10 md:w-1/2 space-y-4">
           <h1
@@ -102,7 +102,7 @@ export default function Hero() {
       <GroceryCategories />
 
       {/* 🧺 Product Cards */}
-      <section className="px-6 md:px-12 lg:px-20 py-10">
+      <section className="px-6 md:px-12 lg:px-20 py-10 select-none">
         <div className="flex justify-between items-center mb-6">
           <h2
             className="text-3xl font-bold text-gray-800"
@@ -118,7 +118,7 @@ export default function Hero() {
             return (
               <div
                 key={product.id}
-                className="bg-white rounded-t-xl w-70 rounded-b-[10%] hover:shadow-md transition flex flex-col items-center pb-7"
+                className="bg-white select-none rounded-t-xl w-70 rounded-b-[10%] hover:shadow-md transition flex flex-col items-center pb-7"
                 style={{ clipPath: "ellipse(150% 97% at 50% 0%)" }}
               >
                 {/* Product Image + Link */}
