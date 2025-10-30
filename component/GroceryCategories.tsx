@@ -6,8 +6,10 @@ import {
   Apple,
   Drumstick,
   Milk,
+  ArrowRightCircle,
 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function GroceryCategories() {
   const categories = [
@@ -46,48 +48,57 @@ export default function GroceryCategories() {
       color: 'text-yellow-600',
       image: '/images/milk.png',
     },
-    {
-  title: 'Seafood',
-  subtitle: 'Fresh from ocean',
-  icon: Drumstick, 
-  color: 'text-cyan-600',
-  image: '/images/sea.png',
-},
-
-
   ];
 
   return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-6 mx-40 py-7 select-none" style={{ fontFamily: "var(--font-fredoka)" }}>
-      {categories.map((cat) => (
-        <div
-          key={cat.title}
-          className="flex items-center justify-between bg-white rounded-xl transition p-5 w-full cursor-pointer"
-        >
-          {/* Left text */}
-          <div className="flex flex-col items-start whitespace-nowrap">
-            <h3 className="text-base font-semibold text-gray-800 leading-tight">
-              {cat.title}
-            </h3>
-            <p className="text-sm text-gray-700">{cat.subtitle}</p>
-          </div>
+    <div
+      className="mx-40 py-7 select-none"
+      style={{ fontFamily: 'var(--font-fredoka)' }}
+    >
+      <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-6 items-stretch">
+        {/* Regular category cards */}
+        {categories.map((cat) => (
+          <div
+            key={cat.title}
+            className="flex items-center justify-between bg-white rounded-xl transition p-5 w-full cursor-pointer hover:shadow-md"
+          >
+            {/* Left text */}
+            <div className="flex flex-col items-start whitespace-nowrap">
+              <h3 className="text-base font-semibold text-gray-800 leading-tight">
+                {cat.title}
+              </h3>
+              <p className="text-sm text-gray-700">{cat.subtitle}</p>
+            </div>
 
-          {/* Right image */}
-          <div className="flex items-end justify-center mt-2">
-            {cat.image ? (
-              <Image
-                src={cat.image}
-                alt={cat.title}
-                width={70}
-                height={70}
-                className="object-contain relative top-2"
-              />
-            ) : (
-              <cat.icon className={`w-10 h-10 ${cat.color}`} />
-            )}
+            {/* Right image or icon */}
+            <div className="flex items-end justify-center mt-2">
+              {cat.image ? (
+                <Image
+                  src={cat.image}
+                  alt={cat.title}
+                  width={70}
+                  height={70}
+                  className="object-contain relative top-2"
+                />
+              ) : (
+                <cat.icon className={`w-10 h-10 ${cat.color}`} />
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+
+        {/* See All card */}
+  <Link
+  href="/categories"
+  className="flex flex-col items-center justify-center bg-[#BDEA6F] text-[#074E46] rounded-l-2xl hover:brightness-95 transition cursor-pointer py-6"
+>
+  <div className="bg-white rounded-full flex items-center justify-center p-2 mb-2">
+    <ArrowRightCircle className="w-8 h-8" />
+  </div>
+  <span className="text-base font-semibold">See All</span>
+</Link>
+
+      </div>
     </div>
   );
 }
