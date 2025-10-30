@@ -8,8 +8,10 @@ import {
   Settings,
   LogOut,
   X,
+  
 } from "lucide-react";
 import Link from "next/link";
+import React from "react";
 
 export default function Sidebar({
   isOpen,
@@ -30,62 +32,80 @@ export default function Sidebar({
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Sidebar */}
+          {/* Background overlay (same as Cart) */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 bg-black z-40"
+          />
+
+          {/* Sidebar Drawer */}
           <motion.aside
-            initial={{ x: -80, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -250, opacity: 0 }}
-            transition={{
-              type: "spring",
-              stiffness: 150,   // Faster spring
-              damping: 18,      // Less bounce
-              duration: 0.25,   // Quick entry
-            }}
-            className="fixed top-0 left-0 rounded-r-4xl h-full w-90 bg-[#074E46] text-white flex flex-col items-center shadow-lg z-40"
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ type: "spring", stiffness: 120, damping: 20 }}
+            className="fixed top-0 left-0 h-full w-full sm:w-[380px] bg-[#F4F6F6] z-50 shadow-2xl flex flex-col rounded-r-4xl overflow-hidden"
           >
-            {/* Close Button */}
-            <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-5 right-5 p-2 cursor-pointer bg-white/10 hover:bg-white/20 rounded-full transition"
-            >
-              <X />
-            </button>
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b bg-[#074E46] text-white">
+              <h2
+                className="text-2xl font-bold tracking-wide flex justify-center items-center gap-2"
+                style={{ fontFamily: "var(--font-fredoka)" }}
+              >
+                <User/> My Account
+              </h2>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-2 rounded-full hover:bg-white/10 transition cursor-pointer"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
 
             {/* User Info */}
-            <div className="w-full flex flex-col items-center py-8 border-b border-white/10">
-              <h3 className="font-semibold text-lg">Hello, Sam</h3>
-              <p className="text-sm text-white/70">Welcome back 👋</p>
+            <div className="flex flex-col items-center py-6 bg-white shadow-sm border-b border-gray-100">
+              <img
+                src="https://i.pravatar.cc/80"
+                alt="User Avatar"
+                className="w-20 h-20 rounded-full border-4 border-[#BDEA6F] shadow-md"
+              />
+              <h3
+                className="mt-3 font-semibold text-lg text-gray-800"
+                style={{ fontFamily: "var(--font-fredoka)" }}
+              >
+                Hello, Sam 👋
+              </h3>
+              <p className="text-sm text-gray-600">Welcome back!</p>
             </div>
 
-            {/* Links */}
-            <nav className="mt-8 w-full">
+            {/* Links (Scrollable section) */}
+            <div className="flex-1 overflow custom-scrollbar bg-[#F4F6F6]">
               {links.map((link) => (
-                <Link
+                <motion.div
                   key={link.name}
-                  href={link.href}
-                  className="flex items-center gap-3 px-6 py-3 hover:bg-[#C7F464] hover:text-[#074E46] transition-colors"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <link.icon size={20} />
-                  <span className="text-base font-medium">{link.name}</span>
-                </Link>
+                  <Link
+                    href={link.href}
+                    className="flex items-center gap-3 px-6 py-4 bg-white hover:bg-[#BDEA6F] hover:text-[#074E46] text-gray-800 transition-colors border-b border-gray-100"
+                  >
+                    <link.icon size={22} />
+                    <span className="text-base font-medium">{link.name}</span>
+                  </Link>
+                </motion.div>
               ))}
-            </nav>
+            </div>
 
             {/* Footer */}
-            <div className="mt-auto mb-6 text-xs text-white/60 text-center px-4">
-              © {new Date().getFullYear()} RenderStore
+            <div className="p-6 bg-[#F4F6F6] text-center text-xs text-gray-600 border-t">
+              © {new Date().getFullYear()} RenderStore — All rights reserved.
             </div>
           </motion.aside>
-
-          {/* Overlay (less blur, faster fade) */}
-          <motion.div
-            onClick={() => setIsOpen(false)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.25 }}  // less dark + faster
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/40 z-30"
-          />
         </>
       )}
     </AnimatePresence>
