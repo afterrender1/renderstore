@@ -5,11 +5,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
+import Sidebar from "./SideBar";
 
 export default function Navbar() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // ✅ Prevent hydration mismatch
   useEffect(() => {
@@ -21,11 +23,16 @@ export default function Navbar() {
   return (
     <header className="bg-[#074E46] select-none mt-4 mx-18 text-white py-4 px-8 flex items-center justify-between shadow-md rounded-xl">
       {/* Left: Logo */}
-      <div className="flex items-center gap-2">
-        <button className="p-2 hover:bg-white/10 rounded-full">
+      <div className="flex items-center gap-3">
+        {/* ✅ Toggle Sidebar */}
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="p-2 hover:bg-white/10 rounded-full cursor-pointer"
+        >
           <Menu size={22} />
         </button>
-        <Link href={"/"}>
+
+        <Link href="/">
           <div className="flex items-center gap-1">
             <span className="text-xl">
               <BaggageClaim color="#BBEB75" />
@@ -34,6 +41,7 @@ export default function Navbar() {
           </div>
         </Link>
       </div>
+      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
       {/* Middle: Search bar */}
       <div className="flex items-center mr-20 bg-white text-gray-800 rounded-full w-[40%] px-3 py-2 shadow-sm focus-within:ring-2 focus-within:ring-[#BBEB75]">
