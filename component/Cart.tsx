@@ -102,11 +102,16 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                         className="rounded-xl object-cover"
                       />
                       <div className="flex flex-col ">
-                        <h3 className="font-bold text-gray-800 text-lg leading-tight">
-                          {item.title}
+                        <h3 className="font-bold text-gray-800 text-base leading-tight">
+                          {item.title.length > 30 ? item.title.slice(0,10) + "..." : item.title}
                         </h3>
                         <p className="text-gray-500 text-sm mt-1 line-clamp-2 max-w-[200px]">
-                          {item.description || "No description available."}
+                    {item.description
+  ? item.description.length > 30
+    ? item.description.slice(0, 18) + "..."
+    : item.description
+  : "No description available."}
+
                         </p>
                         <p className="text-gray-800 mt-2 font-semibold text-base">
                           ${item.price} × {item.quantity}
@@ -154,7 +159,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
     whileTap={{ scale: 0.9 }}
     className="cursor-pointer text-red-500 hover:text-red-600 text-sm flex items-center gap-1 mt-1"
   >
-    <Trash2 className="w-4 h-4" /> Remove
+    <Trash2 className="w-4 h-4" /> 
   </motion.button>
 </div>
 

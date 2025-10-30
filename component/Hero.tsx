@@ -186,7 +186,7 @@ export default function Hero() {
                     className="text-center font-semibold text-gray-800 text-base mb-1 truncate"
                     style={{ fontFamily: "var(--font-fredoka)" }}
                   >
-                    {product.title}
+                    {product.title.length > 30 ? product.title.slice(0 , 20) + '...' : product.title}
                   </h3>
                   <p
                     className="text-gray-500 text-center mb-2 capitalize"
