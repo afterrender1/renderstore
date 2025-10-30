@@ -4,3 +4,13 @@ body{
   background-color: #F4F6F6;
   box-sizing: border-box;
 }
+
+/* 🧩 Hide Scrollbar Cross-Browser */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}

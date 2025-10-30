@@ -54,14 +54,15 @@ export default function Cart({ isOpen, onClose }: CartProps) {
               </h2>
               <button
                 onClick={onClose}
-                className="p-2 rounded-full hover:bg-white/10 transition"
+                className="p-2 rounded-full hover:bg-white/10 transition cursor-pointer"
               >
                 <X className="w-7 h-7" />
               </button>
             </div>
 
             {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            <div className="flex-1 overflow-y-auto scrollbar-hidden p-6 space-y-6">
+
               {cartItems.length === 0 ? (
           <div className="text-gray-500 mt-20 text-lg flex flex-col justify-center h-80">
   <div
@@ -90,7 +91,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.2 }}
-                    className="flex items-center justify-between bg-gray-50 rounded-2xl p-4 shadow-sm hover:shadow-md transition"
+                    className="flex items-center justify-between bg-gray-50 rounded-2xl p-4 shadow-sm hover:shadow-md transition "
                   >
                     <div className="flex items-start gap-4">
                       <Image
@@ -100,7 +101,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                         height={90}
                         className="rounded-xl object-cover"
                       />
-                      <div className="flex flex-col">
+                      <div className="flex flex-col ">
                         <h3 className="font-bold text-gray-800 text-lg leading-tight">
                           {item.title}
                         </h3>

@@ -15,7 +15,7 @@ type Product = {
   thumbnail: string;
   price: number;
   category: string;
-  description: string,
+  description: string;
 };
 
 export default function Hero() {
@@ -23,14 +23,13 @@ export default function Hero() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
+  // ✅ Fetch Products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch("https://dummyjson.com/products");
         const data = await response.json();
         setProducts(data.products);
-        console.log(data.products);
-        
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -38,35 +37,50 @@ export default function Hero() {
     fetchProducts();
   }, []);
 
+  // ✅ Helpers
   const getQuantity = (id: number) => {
     const item = cartItems.find((item) => item.id === id);
     return item ? item.quantity : 0;
   };
 
   const handleAdd = (product: Product) => {
-  dispatch(
-  addToCart({
-    id: product.id,
-    title: product.title,
-    price: product.price,
-    thumbnail: product.thumbnail,
-    description: product.description, // ✅ now allowed
-  })
-);
-
+    dispatch(
+      addToCart({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        thumbnail: product.thumbnail,
+        description: product.description,
+      })
+    );
   };
 
   const handleIncrease = (id: number) => dispatch(increaseQty(id));
   const handleDecrease = (id: number) => dispatch(decreaseQty(id));
 
+  // 🎞 Motion Variants for animation reuse
+  const fadeZoomIn = {
+    hidden: { opacity: 0, scale: 0.9, y: 30 },
+    visible: { opacity: 1, scale: 1, y: 0 },
+  };
+
   return (
     <>
-      {/* 🛒 Hero Section */}
-      <section
+      {/* 🛒 Hero Section with Animation */}
+      <motion.section
+        initial="hidden"
+        animate="visible"
+        variants={fadeZoomIn}
+        transition={{ duration: 0.8, ease: "easeOut" }}
         style={{ clipPath: "ellipse(150% 90% at 50% 0%)" }}
         className="bg-[#074E46] select-none mt-5 text-white mx-18 rounded-t-4xl flex flex-col md:flex-row items-center justify-between px-6 md:px-12 lg:px-20 py-10 md:py-16 relative overflow-hidden"
       >
-        <div className="relative z-10 md:w-1/2 space-y-4">
+        {/* Left Text Animation */}
+        <motion.div
+          variants={fadeZoomIn}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          className="relative z-10 md:w-1/2 space-y-4"
+        >
           <h1
             className="text-3xl md:text-6xl font-extrabold leading-snug"
             style={{ fontFamily: "var(--font-fredoka)" }}
@@ -80,15 +94,22 @@ export default function Hero() {
             Get organic produce and sustainably sourced groceries delivered at up
             to <span className="font-semibold text-white">4% off grocery</span>.
           </p>
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             style={{ fontFamily: "var(--font-fredoka)" }}
             className="cursor-pointer bg-[#C7F464] text-[#074E46] px-6 py-2 rounded-lg font-semibold hover:bg-[#b9ec5d] transition"
           >
             Shop now
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
 
-        <div className="relative z-10 mt-10 md:mt-0 md:w-1/2 flex justify-center">
+        {/* Right Image Animation */}
+        <motion.div
+          variants={fadeZoomIn}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="relative z-10 mt-10 md:mt-0 md:w-1/2 flex justify-center"
+        >
           <Image
             src="/images/bag.png"
             alt="Grocery bag"
@@ -96,32 +117,42 @@ export default function Hero() {
             height={500}
             className="object-cover"
           />
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
+      {/* 🥦 Grocery Categories Section */}
       <GroceryCategories />
 
       {/* 🧺 Product Cards */}
       <section className="px-6 md:px-12 lg:px-20 py-10 select-none">
-        <div className="flex justify-between items-center mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="flex justify-between items-center mb-6"
+        >
           <h2
             className="text-3xl font-bold text-gray-800"
             style={{ fontFamily: "var(--font-fredoka)" }}
           >
             You might need
           </h2>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          {[...products].reverse().map((product) => {
+          {products.slice(0, 20).reverse().map((product, index) => {
             const quantity = getQuantity(product.id);
             return (
-              <div
+              <motion.div
                 key={product.id}
+                variants={fadeZoomIn}
+                initial="hidden"
+                animate="visible"
+                transition={{ duration: 0.5, delay: index * 0.05 }}
                 className="bg-white select-none rounded-t-xl w-70 rounded-b-[10%] hover:shadow-md transition flex flex-col items-center pb-7"
                 style={{ clipPath: "ellipse(150% 97% at 50% 0%)" }}
               >
-                {/* Product Image + Link */}
+                {/* Product Image */}
                 <Link
                   href={`/product/${product.id}`}
                   className="relative w-full flex justify-center items-start cursor-pointer"
@@ -136,7 +167,7 @@ export default function Hero() {
                   />
                 </Link>
 
-                {/* Info */}
+                {/* Product Info */}
                 <h3
                   className="text-center font-semibold text-gray-800 text-base mb-1 truncate"
                   style={{ fontFamily: "var(--font-fredoka)" }}
@@ -153,10 +184,10 @@ export default function Hero() {
                   className="text-3xl font-bold text-gray-800 mb-3"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                 >
-                  {product.price}$
+                  ${product.price}
                 </span>
 
-                {/* Animated Add / Minus Button */}
+                {/* Add / Counter Buttons */}
                 <div className="flex justify-center w-full">
                   <AnimatePresence mode="wait">
                     {quantity === 0 ? (
@@ -210,7 +241,7 @@ export default function Hero() {
                     )}
                   </AnimatePresence>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
