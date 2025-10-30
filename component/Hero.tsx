@@ -114,10 +114,10 @@ export default function Hero() {
           className="relative z-10 mt-10 md:mt-0 md:w-1/2 flex justify-center"
         >
           <Image
-            src="/images/bag.png"
+            src="/images/mainhero.png"
             alt="Grocery bag"
-            width={500}
-            height={500}
+            width={900}
+            height={900}
             className="object-cover"
           />
         </motion.div>
