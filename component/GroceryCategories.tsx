@@ -12,6 +12,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
+
 export default function GroceryCategories() {
   const categories = [
     {
@@ -43,11 +44,12 @@ export default function GroceryCategories() {
       image: '/images/lags.png',
     },
     {
-      title: 'Milk & Dairy',
-      subtitle: 'Processed food',
+      title: 'Wearing',
+      href: "/wearing",
+      subtitle: 'Style, Clothes',
       icon: Milk,
       color: 'text-yellow-600',
-      image: '/images/milk.png',
+      image: '/images/wearing.png',
     },
   ];
 
@@ -69,36 +71,43 @@ export default function GroceryCategories() {
       <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-6 items-stretch">
         {/* Category cards */}
         {categories.map((cat, index) => (
-          <motion.div
-            key={cat.title}
-            variants={fadeZoomIn}
-            transition={{ duration: 0.5, delay: index * 0.05 }}
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center justify-between bg-white rounded-xl transition p-5 w-full cursor-pointer hover:shadow-md"
-          >
-            {/* Left text */}
-            <div className="flex flex-col items-start whitespace-nowrap">
-              <h3 className="text-base font-semibold text-gray-800 leading-tight">
-                {cat.title}
-              </h3>
-              <p className="text-sm text-gray-700">{cat.subtitle}</p>
-            </div>
+          <div key={index}>
+          <Link href={cat.href ?? '#'}>
+             <motion.div
+          key={cat.title}
+          variants={fadeZoomIn}
+          transition={{ duration: 0.5, delay: index * 0.05 }}
+          whileHover={{ scale: 1.05 }}
+          className="flex items-center justify-between bg-white rounded-xl transition p-7 w-full cursor-pointer h-35 hover:shadow-md"
+        >
+          {/* Left text */}
 
-            {/* Right image or icon */}
-            <div className="flex items-end justify-center mt-2">
-              {cat.image ? (
-                <Image
-                  src={cat.image}
-                  alt={cat.title}
-                  width={70}
-                  height={70}
-                  className="object-contain relative top-2"
-                />
-              ) : (
-                <cat.icon className={`w-10 h-10 ${cat.color}`} />
-              )}
-            </div>
-          </motion.div>
+          <div className="flex flex-col items-start whitespace-nowrap">
+            <h3 className="text-base font-semibold text-gray-800 leading-tight">
+              {cat.title}
+            </h3>
+            <p className="text-sm text-gray-700">{cat.subtitle}</p>
+          </div>
+
+          {/* Right image or icon */}
+          <div className="flex items-end justify-center mt-2">
+            {cat.image ? (
+              <Image
+                src={cat.image}
+                alt={cat.title}
+                width={100}
+                height={100}
+                className="object-contain relative top-2"
+              />
+            ) : (
+              <cat.icon className={`w-10 h-10 ${cat.color}`} />
+            )}
+          </div>
+
+        </motion.div>
+          </Link>
+       
+          </div>
         ))}
 
         {/* See All Card */}

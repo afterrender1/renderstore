@@ -6,7 +6,22 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "cdn.dummyjson.com",
-        pathname: "/**", // allow all images under this domain
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "fakestoreapi.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "api.escuelajs.co",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
       },
     ],
   },
