@@ -1,17 +1,12 @@
 "use client";
 
+import { signOut, onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "@/app/firebaseConfig";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  User,
-  ShoppingBag,
-  Heart,
-  Settings,
-  LogOut,
-  X,
-  
-} from "lucide-react";
+import { User as UserIcon, ShoppingBag, Heart, Settings, LogOut, X } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import AuthModal from "@/app/auth/AuthModel";
 
 export default function Sidebar({
   isOpen,
@@ -20,19 +15,57 @@ export default function Sidebar({
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
 }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  // ✅ Watch Firebase Auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // ✅ Automatically close AuthModal after login
+  useEffect(() => {
+    if (user) setShowAuthModal(false);
+  }, [user]);
+
+  // ✅ Logout logic
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem("User");
+      setUser(null);
+      alert("Logged out successfully!");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const links = [
-    { name: "Profile", icon: User, href: "/profile" },
+    { name: "Profile", icon: UserIcon, href: "/profile" },
     { name: "My Orders", icon: ShoppingBag, href: "/orders" },
     { name: "Wishlist", icon: Heart, href: "/wishlist" },
     { name: "Settings", icon: Settings, href: "/settings" },
-    { name: "Logout", icon: LogOut, href: "/logout" },
   ];
+
+  // ✅ Handle click for each menu link
+  const handleLinkClick = (href: string) => {
+    if (!user) {
+      // Not logged in → show Auth modal
+      setShowAuthModal(true);
+    } else {
+      // Logged in → navigate and close sidebar
+      setIsOpen(false);
+    }
+  };
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Background overlay (same as Cart) */}
+          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.5 }}
@@ -42,7 +75,7 @@ export default function Sidebar({
             className="fixed inset-0 bg-black z-40"
           />
 
-          {/* Sidebar Drawer */}
+          {/* Sidebar */}
           <motion.aside
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
@@ -52,60 +85,80 @@ export default function Sidebar({
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b bg-[#074E46] text-white">
-              <h2
-                className="text-2xl font-bold tracking-wide flex justify-center items-center gap-2"
-                style={{ fontFamily: "var(--font-fredoka)" }}
-              >
-                <User/> My Account
+              <h2 className="text-2xl font-bold flex items-center gap-2">
+                <UserIcon /> My Account
               </h2>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 rounded-full hover:bg-white/10 transition cursor-pointer"
+                className="p-2 rounded-full hover:bg-white/10"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
 
             {/* User Info */}
-            <div className="flex flex-col items-center py-6 bg-white shadow-sm border-b border-gray-100">
-              <img
-                src="https://i.pravatar.cc/80"
-                alt="User Avatar"
-                className="w-20 h-20 rounded-full border-4 border-[#BDEA6F] shadow-md"
-              />
-              <h3
-                className="mt-3 font-semibold text-lg text-gray-800"
-                style={{ fontFamily: "var(--font-fredoka)" }}
-              >
-                Hello, Sam 👋
-              </h3>
-              <p className="text-sm text-gray-600">Welcome back!</p>
-            </div>
+            {user ? (
+              <div className="flex flex-col items-center py-6 bg-white shadow-sm border-b">
+                <img
+                  src={user.photoURL || "https://i.pravatar.cc/80"}
+                  alt="User Avatar"
+                  className="w-20 h-20 rounded-full border-4 border-[#BDEA6F]"
+                />
+                <h3 className="mt-3 font-semibold text-lg text-gray-800">
+                  Hello, {user.displayName || user.email}
+                </h3>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center py-6 bg-white shadow-sm border-b">
+                <img
+                  src="https://i.pravatar.cc/80"
+                  alt="Guest Avatar"
+                  className="w-20 h-20 rounded-full border-4 border-gray-300"
+                />
+                <h3 className="mt-3 font-semibold text-lg text-gray-800">
+                  Welcome, Guest 👋
+                </h3>
+              </div>
+            )}
 
-            {/* Links (Scrollable section) */}
-            <div className="flex-1 overflow custom-scrollbar bg-[#F4F6F6]">
+            {/* Menu Links */}
+            <div className="flex-1 overflow-y-auto">
               {links.map((link) => (
-                <motion.div
+                <button
                   key={link.name}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleLinkClick(link.href)}
+                  className="flex items-center w-full text-left gap-3 px-6 py-4 bg-white hover:bg-[#BDEA6F] hover:text-[#074E46] border-b text-gray-800 transition"
                 >
-                  <Link
-                    href={link.href}
-                    className="flex items-center gap-3 px-6 py-4 bg-white hover:bg-[#BDEA6F] hover:text-[#074E46] text-gray-800 transition-colors border-b border-gray-100"
-                  >
-                    <link.icon size={22} />
-                    <span className="text-base font-medium">{link.name}</span>
-                  </Link>
-                </motion.div>
+                  <link.icon size={22} />
+                  {link.name}
+                </button>
               ))}
-            </div>
 
-            {/* Footer */}
-            <div className="p-6 bg-[#F4F6F6] text-center text-xs text-gray-600 border-t">
-              © {new Date().getFullYear()} RenderStore — All rights reserved.
+              {/* ✅ Conditional Button */}
+              {user ? (
+                <button
+                  onClick={handleLogout}
+                  className="flex w-full items-center gap-3 px-6 py-4 bg-white hover:bg-red-100 text-red-600 border-t transition"
+                >
+                  <LogOut size={22} />
+                  Logout
+                </button>
+              ) : (
+                <button
+                  onClick={() => setShowAuthModal(true)}
+                  className="flex w-full items-center gap-3 px-6 py-4 bg-white hover:bg-[#BDEA6F] text-[#074E46] border-t transition font-semibold"
+                >
+                  <UserIcon size={22} />
+                  Login / Sign Up
+                </button>
+              )}
             </div>
           </motion.aside>
+
+          {/* 🟢 Auth Modal */}
+          <AnimatePresence>
+            {showAuthModal && <AuthModal />}
+          </AnimatePresence>
         </>
       )}
     </AnimatePresence>
