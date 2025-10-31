@@ -207,11 +207,15 @@ export default function Cart({ isOpen, onClose }: CartProps) {
           </motion.div>
 
           {/* 🟢 Animated Auth Modal */}
-          <AnimatePresence>
-            {showAuthModal && (
-              <AuthModal />
-            )}
-          </AnimatePresence>
+         <AnimatePresence>
+  {showAuthModal && (
+    <AuthModal
+      isOpen={showAuthModal}
+      onClose={() => setShowAuthModal(false)}
+    />
+  )}
+</AnimatePresence>
+
         </>
       )}
     </AnimatePresence>

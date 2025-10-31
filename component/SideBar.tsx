@@ -138,7 +138,7 @@ export default function Sidebar({
               {user ? (
                 <button
                   onClick={handleLogout}
-                  className="flex w-full items-center gap-3 px-6 py-4 bg-white hover:bg-red-100 text-red-600 border-t transition"
+                  className="flex w-full cursor-pointer items-center gap-3 px-6 py-4 bg-white hover:bg-red-100 text-red-600 border-t transition"
                 >
                   <LogOut size={22} />
                   Logout
@@ -146,7 +146,7 @@ export default function Sidebar({
               ) : (
                 <button
                   onClick={() => setShowAuthModal(true)}
-                  className="flex w-full items-center gap-3 px-6 py-4 bg-white hover:bg-[#BDEA6F] text-[#074E46] border-t transition font-semibold"
+                  className="flex w-full cursor-pointer items-center gap-3 px-6 py-4 bg-white hover:bg-[#BDEA6F] text-[#074E46] border-t transition font-semibold"
                 >
                   <UserIcon size={22} />
                   Login / Sign Up
@@ -156,9 +156,15 @@ export default function Sidebar({
           </motion.aside>
 
           {/* 🟢 Auth Modal */}
-          <AnimatePresence>
-            {showAuthModal && <AuthModal />}
-          </AnimatePresence>
+       <AnimatePresence>
+  {showAuthModal && (
+    <AuthModal
+      isOpen={showAuthModal}
+      onClose={() => setShowAuthModal(false)}
+    />
+  )}
+</AnimatePresence>
+
         </>
       )}
     </AnimatePresence>

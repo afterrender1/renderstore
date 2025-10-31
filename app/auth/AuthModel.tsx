@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -12,28 +12,27 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/app/firebaseConfig";
+import { X } from "lucide-react";
 
-export default function AuthModal() {
-  const [isOpen, setIsOpen] = useState(true);
+type AuthModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [isLogin, setIsLogin] = useState(true);
+  const [form, setForm] = useState({ fullName: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-  });
-
   const fadeZoom = {
-    hidden: { opacity: 0, scale: 0.8, y: 20 },
+    hidden: { opacity: 0, scale: 0.9, y: 20 },
     visible: { opacity: 1, scale: 1, y: 0 },
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,40 +41,27 @@ export default function AuthModal() {
 
     try {
       if (isLogin) {
-        // LOGIN
-        await signInWithEmailAndPassword(auth, formData.email, formData.password);
-        console.log("Login successful");
+        await signInWithEmailAndPassword(auth, form.email, form.password);
         router.push("/");
-        
-       
       } else {
-        // SIGNUP
-        const userCredential = await createUserWithEmailAndPassword(
+        const { user } = await createUserWithEmailAndPassword(
           auth,
-          formData.email,
-          formData.password
+          form.email,
+          form.password
         );
-
-        const createdUser = userCredential.user;
-
-        await updateProfile(createdUser, { displayName: formData.fullName });
-
-        await setDoc(doc(db, "users", createdUser.uid), {
-          displayName: formData.fullName,
-          email: formData.email,
+        await updateProfile(user, { displayName: form.fullName });
+        await setDoc(doc(db, "users", user.uid), {
+          displayName: form.fullName,
+          email: form.email,
           createdAt: serverTimestamp(),
           cart: [],
           orders: [],
         });
-
-        localStorage.setItem("User", JSON.stringify(createdUser));
-        console.log("Account created successfully");
       }
 
-      setIsOpen(false);
-      setFormData({ fullName: "", email: "", password: "" });
+      onClose(); // ✅ close via parent control
+      setForm({ fullName: "", email: "", password: "" });
     } catch (err: any) {
-      console.log("Auth error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -92,10 +78,10 @@ export default function AuthModal() {
       const user = result.user;
 
       const userRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(userRef);
-      if (!docSnap.exists()) {
+      const userSnap = await getDoc(userRef);
+      if (!userSnap.exists()) {
         await setDoc(userRef, {
-          displayName: user.displayName || "Anonymous",
+          displayName: user.displayName || "New User",
           email: user.email,
           createdAt: serverTimestamp(),
           cart: [],
@@ -103,10 +89,8 @@ export default function AuthModal() {
         });
       }
 
-      console.log("Signed in with Google");
-      setIsOpen(false);
+      onClose(); // ✅ close modal after Google login
     } catch (err: any) {
-      console.log("Google Sign-in error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -114,127 +98,121 @@ export default function AuthModal() {
   };
 
   return (
-    <>
-      {/* Trigger Buttons */}
-      <div className="flex gap-4 justify-center mt-10">
-        <button
-          className="bg-[#C7F464] text-[#074E46] px-6 py-2 rounded-full font-semibold hover:bg-[#b9ec5d] shadow-md transition"
-          onClick={() => {
-            setIsOpen(true);
-            setIsLogin(true);
-          }}
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
         >
-          Login
-        </button>
-        <button
-          className="bg-[#C7F464] text-[#074E46] px-6 py-2 rounded-full font-semibold hover:bg-[#b9ec5d] shadow-md transition"
-          onClick={() => {
-            setIsOpen(true);
-            setIsLogin(false);
-          }}
-        >
-          Signup
-        </button>
-      </div>
-
-      {/* Modal */}
-      <AnimatePresence>
-        {isOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+            variants={fadeZoom}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            transition={{ type: "spring", duration: 0.4 }}
+            className="bg-white/95 text-gray-900 rounded-3xl p-8 w-full max-w-md shadow-2xl relative"
           >
-            <motion.div
-              variants={fadeZoom}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              className="bg-white text-gray-800 rounded-3xl p-8 w-11/12 max-w-md shadow-2xl relative"
+            {/* Close */}
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition"
             >
+              <X className="w-6 h-6" />
+            </button>
+
+            {/* Title */}
+            <h2 className="text-3xl font-bold text-center text-[#074E46] mb-6">
+              {isLogin ? "Welcome Back 👋" : "Create an Account"}
+            </h2>
+
+            {/* Error */}
+            {error && (
+              <p className="text-red-600 text-center text-sm mb-3">{error}</p>
+            )}
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {!isLogin && (
+                <input
+                  name="fullName"
+                  placeholder="Full Name"
+                  value={form.fullName}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#BDEA6F] outline-none bg-white placeholder-gray-500"
+                  required
+                />
+              )}
+              <input
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={form.email}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#BDEA6F] outline-none bg-white placeholder-gray-500"
+                required
+              />
+              <input
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={form.password}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#BDEA6F] outline-none bg-white placeholder-gray-500"
+                required
+              />
+
               <button
-                onClick={() => setIsOpen(false)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-xl font-bold transition"
+                type="submit"
+                disabled={loading}
+                className="w-full cursor-pointer bg-[#BDEA6F] text-[#074E46] py-3 rounded-xl font-semibold hover:bg-[#a6e55c] transition"
               >
-                &times;
+                {loading
+                  ? isLogin
+                    ? "Logging in..."
+                    : "Signing up..."
+                  : isLogin
+                  ? "Login"
+                  : "Sign Up"}
               </button>
+            </form>
 
-              <h2 className="text-3xl font-bold mb-4 text-[#074E46] text-center">
-                {isLogin ? "Login" : "Sign Up"}
-              </h2>
+            {/* Toggle Login/Signup */}
+            <p className="text-center mt-5 text-gray-700 text-sm">
+              {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+              <button
+                type="button"
+                onClick={() => setIsLogin(!isLogin)}
+                className="text-[#074E46] font-semibold hover:text-[#052f29]"
+              >
+                {isLogin ? "Sign Up" : "Login"}
+              </button>
+            </p>
 
-              {error && <p className="text-red-500 text-center mb-3">{error}</p>}
+            {/* Divider */}
+            <div className="flex items-center my-6">
+              <hr className="flex-1 border-gray-300" />
+              <span className="mx-2 text-gray-500 text-sm">or</span>
+              <hr className="flex-1 border-gray-300" />
+            </div>
 
-              <form className="space-y-4" onSubmit={handleSubmit}>
-                {!isLogin && (
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    placeholder="Full Name"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#C7F464]"
-                    required
-                  />
-                )}
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Email"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#C7F464]"
-                  required
-                />
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Password"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#C7F464]"
-                  required
-                />
-
-                <button
-                  type="submit"
-                  className="w-full bg-[#C7F464] text-[#074E46] py-3 rounded-xl font-semibold hover:bg-[#b9ec5d]"
-                  disabled={loading}
-                >
-                  {loading
-                    ? isLogin
-                      ? "Logging in..."
-                      : "Signing up..."
-                    : isLogin
-                    ? "Login"
-                    : "Sign Up"}
-                </button>
-              </form>
-
-              <p className="text-center mt-4 text-gray-600 text-sm">
-                {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-                <button
-                  onClick={() => setIsLogin(!isLogin)}
-                  className="text-[#C7F464] font-semibold hover:text-[#86f36b]"
-                >
-                  {isLogin ? "Sign Up" : "Login"}
-                </button>
-              </p>
-
-              <div className="mt-6 flex gap-4 justify-center">
-                <button
-                  onClick={handleGoogleSignIn}
-                  className="flex-1 bg-[#074E46] text-white py-2 rounded-xl font-semibold hover:bg-[#0b5c51]"
-                  disabled={loading}
-                >
-                  {loading ? "Processing..." : "Continue with Google"}
-                </button>
-              </div>
-            </motion.div>
+            {/* Google Sign In */}
+            <button
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 py-3 rounded-xl hover:bg-gray-100 text-gray-900 font-medium transition shadow-sm"
+            >
+              <img
+                src="https://www.svgrepo.com/show/475656/google-color.svg"
+                alt="Google"
+                className="w-5 h-5"
+              />
+              {loading ? "Processing..." : "Continue with Google"}
+            </button>
           </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
