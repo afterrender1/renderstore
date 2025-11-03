@@ -14,6 +14,7 @@ import {
 import AuthModal from "@/app/auth/AuthModel";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/app/firebaseConfig";
+import CheckoutButton from "./PayBtn";
 
 type CartProps = {
   isOpen: boolean;
@@ -41,11 +42,43 @@ export default function Cart({ isOpen, onClose }: CartProps) {
     if (user) setShowAuthModal(false);
   }, [user]);
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (!user) {
       setShowAuthModal(true);
+      return
     } else {
-      alert(`Proceeding to checkout as ${user.email}`);
+      setShowAuthModal(false)
+    }
+     if (cartItems.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+
+    const itemsForStripe = cartItems.map(item => ({
+      id: item.id,
+      title: item.title,
+      price: item.price,
+      quantity: item.quantity,
+    }));
+
+    try {
+      const res = await fetch("/api/checkout_sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: itemsForStripe }),
+      });
+      const data = await res.json();
+
+      if (data?.url) {
+        // redirect user to Stripe Checkout
+        window.location.href = data.url;
+      } else {
+        console.error("Checkout failed", data);
+        alert("Checkout failed. See console.");
+      }
+    } catch (err) {
+      console.error("Error creating checkout session", err);
+      alert("Something went wrong.");
     }
   };
 
@@ -206,6 +239,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                 Proceed to Checkout →
               </motion.button>
             </div>
+
           </motion.div>
 
           {/* Auth Modal */}
