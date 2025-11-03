@@ -41,11 +41,13 @@ export default function GroceryCategories() {
       image: '/images/fruits.png',
     },
     {
-      title: 'Chicken legs',
-      subtitle: 'Frozen meal',
+      title: 'Electronics',
+      href: '/electronics',
+
+      subtitle: 'Tech products',
       icon: Drumstick,
       color: 'text-blue-600',
-      image: '/images/lags.png',
+      image: '/images/electronics.png',
     },
     {
       title: 'Wearing',
