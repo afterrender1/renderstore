@@ -140,7 +140,7 @@ export default function Hero() {
         </motion.div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 sm:gap-6">
           {loading ? (
             <div className="flex flex-col items-center col-span-full text-gray-600 text-lg min-h-[50vh] justify-center">
               <LoaderCircle
@@ -161,7 +161,7 @@ export default function Hero() {
                   initial="hidden"
                   animate="visible"
                   transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="bg-white rounded-t-xl rounded-b-[10%] hover:shadow-md transition flex flex-col items-center pb-5 sm:pb-6 w-full max-w-[200px] sm:max-w-none mx-auto"
+                  className="bg- rounded-t-xl rounded-b-[10%] hover:shadow-md transition flex flex-col items-center pb-5 sm:pb-6 w-full max-w-[200px] sm:max-w-none mx-auto"
                   style={{ clipPath: "ellipse(150% 97% at 50% 0%)" }}
                 >
                   <Link

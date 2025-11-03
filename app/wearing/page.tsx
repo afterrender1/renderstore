@@ -48,15 +48,19 @@ export default function WearingPage() {
     fetchWearing();
   }, []);
 
+  // ✅ make wearing product IDs unique
   const getQuantity = (id: number) => {
-    const item = cartItems.find((item) => item.id === id);
+   //@ts-ignore
+    const item = cartItems.find((item) => item.id === `wear-${id}`);
     return item ? item.quantity : 0;
   };
 
   const handleAdd = (product: Product) => {
     dispatch(
       addToCart({
-        id: product.id,
+   //@ts-ignore
+
+        id: `wear-${product.id}`,
         title: product.title,
         price: product.price,
         thumbnail: product.image,
@@ -64,9 +68,12 @@ export default function WearingPage() {
       })
     );
   };
+   //@ts-ignore
 
-  const handleIncrease = (id: number) => dispatch(increaseQty(id));
-  const handleDecrease = (id: number) => dispatch(decreaseQty(id));
+  const handleIncrease = (id: number) => dispatch(increaseQty(`wear-${id}`));
+   //@ts-ignore
+
+  const handleDecrease = (id: number) => dispatch(decreaseQty(`wear-${id}`));
 
   return (
     <>
@@ -139,7 +146,6 @@ export default function WearingPage() {
           </h2>
         </motion.div>
 
-        {/* Loading / Error States */}
         {loading ? (
           <div className="flex flex-col items-center justify-center col-span-full text-gray-600 text-lg h-[50vh]">
             <LoaderCircle size={60} className="animate-spin text-[#074E46]" />
@@ -165,7 +171,7 @@ export default function WearingPage() {
               const quantity = getQuantity(product.id);
               return (
                 <motion.div
-                  key={product.id}
+                  key={`wear-${product.id}`}
                   variants={fadeZoomIn}
                   initial="hidden"
                   animate="visible"
@@ -215,7 +221,7 @@ export default function WearingPage() {
                     </span>
                   </div>
 
-                  {/* Add / Counter Buttons */}
+                  {/* Add / Counter */}
                   <div className="flex justify-center w-full">
                     <AnimatePresence mode="wait">
                       {quantity === 0 ? (
