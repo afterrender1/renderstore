@@ -15,14 +15,15 @@ import { motion } from 'framer-motion';
 export default function GroceryCategories() {
   const categories = [
     {
-      title: 'Vegetable',
+      title: 'Kids Toys',
+      href: '/toys',
       subtitle: 'Local market',
       icon: Carrot,
       color: 'text-green-600',
-      image: '/images/vegetable.png',
+      image: '/images/car.png',
     },
     {
-      title: 'Snacks & Breads',
+      title: 'daily Products',
       subtitle: 'In store delivery',
       icon: Cookie,
       color: 'text-amber-700',
