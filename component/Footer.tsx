@@ -105,7 +105,7 @@ export default function Footer() {
       </div>
 
       {/* Decorative Modern Background */}
-      <div className="absolute top-0 left-0 w-full h-full -z-10 opacity-20 bg-linear-to-t from-[#074E46] to-[#0a5a4f] rounded-t-[5rem]"></div>
+      <div className="absolute top-0 left-0 w-full h-full  opacity-20 bg-linear-to-t from-[#074E46] to-[#0a5a4f] rounded-t-[5rem]"></div>
     </footer>
   );
 }

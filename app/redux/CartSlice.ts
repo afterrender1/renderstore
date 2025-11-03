@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type CartItem = {
-  id: number;
+  id: string | number; // ✅ string or number
   title: string;
   price: number;
   thumbnail: string;
@@ -44,7 +44,9 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<Omit<CartItem, "quantity">>) => {
-      const existingItem = state.items.find((i) => i.id === action.payload.id);
+      const existingItem = state.items.find(
+        (i) => i.id.toString() === action.payload.id.toString()
+      );
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
@@ -52,21 +54,21 @@ const cartSlice = createSlice({
       }
       saveCart(state.items);
     },
-    removeFromCart: (state, action: PayloadAction<number>) => {
-      state.items = state.items.filter((i) => i.id !== action.payload);
+    removeFromCart: (state, action: PayloadAction<string | number>) => {
+      state.items = state.items.filter((i) => i.id.toString() !== action.payload.toString());
       saveCart(state.items);
     },
-    increaseQty: (state, action: PayloadAction<number>) => {
-      const item = state.items.find((i) => i.id === action.payload);
+    increaseQty: (state, action: PayloadAction<string | number>) => {
+      const item = state.items.find((i) => i.id.toString() === action.payload.toString());
       if (item) item.quantity += 1;
       saveCart(state.items);
     },
-    decreaseQty: (state, action: PayloadAction<number>) => {
-      const item = state.items.find((i) => i.id === action.payload);
+    decreaseQty: (state, action: PayloadAction<string | number>) => {
+      const item = state.items.find((i) => i.id.toString() === action.payload.toString());
       if (item && item.quantity > 1) {
         item.quantity -= 1;
       } else {
-        state.items = state.items.filter((i) => i.id !== action.payload);
+        state.items = state.items.filter((i) => i.id.toString() !== action.payload.toString());
       }
       saveCart(state.items);
     },
@@ -77,12 +79,7 @@ const cartSlice = createSlice({
   },
 });
 
-export const {
-  addToCart,
-  removeFromCart,
-  increaseQty,
-  decreaseQty,
-  clearCart,
-} = cartSlice.actions;
+export const { addToCart, removeFromCart, increaseQty, decreaseQty, clearCart } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;
