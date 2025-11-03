@@ -195,7 +195,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                           onClick={() => dispatch(decreaseQty(item.id))}
                           className="text-gray-700 font-bold hover:scale-110 transition"
                         >
-                          <Minus size={16} />
+                          <Minus size={18} />
                         </button>
 
                         <span className="text-gray-800 font-semibold min-w-5 text-center text-sm sm:text-base">
@@ -206,7 +206,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                           onClick={() => dispatch(increaseQty(item.id))}
                           className="text-gray-700 font-bold hover:scale-110 transition"
                         >
-                          <Plus size={16} />
+                          <Plus size={18} />
                         </button>
                       </motion.div>
 

@@ -40,8 +40,10 @@ export default function Sidebar({
     try {
       await signOut(auth);
       localStorage.removeItem("User");
+      setTimeout(() => {
+        setIsOpen(false)
+      }, 500);
       setUser(null);
-      alert("Logged out successfully!");
     } catch (error) {
       console.error(error);
     }
@@ -147,7 +149,7 @@ export default function Sidebar({
                     flex w-full items-center gap-3 
                     px-5 sm:px-6 py-4 sm:py-4.5 
                     bg-white hover:bg-red-100 text-red-600 
-                    border-t font-medium transition-all text-sm sm:text-base
+                    border-t font-medium transition-all text-sm sm:text-base cursor-pointer
                   "
                 >
                   <LogOut size={22} />
@@ -160,7 +162,7 @@ export default function Sidebar({
                     flex w-full items-center gap-3 
                     px-5 sm:px-6 py-4 sm:py-4.5 
                     bg-white hover:bg-[#BDEA6F]/90 text-[#074E46] 
-                    border-t font-semibold transition-all text-sm sm:text-base
+                    border-t font-semibold transition-all text-sm sm:text-base cursor-pointer
                   "
                 >
                   <UserIcon size={22} />

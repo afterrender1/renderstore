@@ -25,6 +25,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+   const [showModal, setShowModal] = useState(false);
 
   const fadeZoom = {
     hidden: { opacity: 0, scale: 0.9, y: 20 },
@@ -42,6 +43,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
     try {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, form.email, form.password);
+      setShowModal(true)
         router.push("/");
       } else {
         const { user } = await createUserWithEmailAndPassword(
@@ -98,6 +100,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
   };
 
   return (
+    <>
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -214,5 +217,24 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
         </motion.div>
       )}
     </AnimatePresence>
+    
+
+    {showModal &&  <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+      <div className="bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in pointer-events-auto">
+       Login Successfull
+      </div>
+
+      {/* Optional Tailwind animation */}
+      <style>{`
+        @keyframes fade-in {
+          0% { opacity: 0; transform: translateY(-10px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.3s ease-out;
+        }
+      `}</style>
+    </div>}
+    </>
   );
 }
