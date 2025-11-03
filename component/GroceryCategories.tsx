@@ -94,7 +94,7 @@ export default function GroceryCategories() {
                       alt={cat.title}
                       width={80}
                       height={80}
-                      className="object-contain relative top-2 w-[60px] sm:w-[80px] md:w-[90px]"
+                      className="object-contain relative top-2 w-[60px] sm:w-20 md:w-[90px]"
                     />
                   ) : (
                     <cat.icon className={`w-8 sm:w-10 h-8 sm:h-10 ${cat.color}`} />

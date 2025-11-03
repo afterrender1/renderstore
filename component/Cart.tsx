@@ -165,7 +165,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                           <Minus size={16} />
                         </button>
 
-                        <span className="text-gray-800 font-semibold min-w-[20px] text-center text-sm sm:text-base">
+                        <span className="text-gray-800 font-semibold min-w-5 text-center text-sm sm:text-base">
                           {item.quantity}
                         </span>
 

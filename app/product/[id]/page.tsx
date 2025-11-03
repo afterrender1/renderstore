@@ -279,7 +279,7 @@ const Detail = ({
     <span className="text-[#074E46] mt-1">{icon}</span>
     <div>
       <p className="text-gray-500 text-xs sm:text-sm">{label}</p>
-      <p className="font-semibold break-words">{value}</p>
+      <p className="font-semibold wrap-break-words">{value}</p>
     </div>
   </div>
 );
