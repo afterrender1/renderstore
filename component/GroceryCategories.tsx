@@ -30,6 +30,8 @@ export default function GroceryCategories() {
     },
     {
       title: 'Fruits',
+      href: '/fruits',
+
       subtitle: 'Chemical free',
       icon: Apple,
       color: 'text-orange-600',
