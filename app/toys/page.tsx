@@ -181,7 +181,7 @@ export default function ToysPage() {
         >
           <div className="relative w-[200px] xs:w-[280px] sm:w-[400px] md:w-[500px] lg:w-[550px] 2xl:w-[650px] h-40 xs:h-[220px] sm:h-[280px] md:h-[340px] lg:h-[380px] 2xl:h-[420px]">
             <Image
-              src="/images/herotoys.png"
+              src="/images/toys1.png"
               alt="Toys Hero"
               fill
               className="object-cover rounded-2xl"

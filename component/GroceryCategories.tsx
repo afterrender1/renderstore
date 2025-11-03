@@ -120,7 +120,7 @@ export default function GroceryCategories() {
           className="col-span-2 sm:col-span-1"
         >
           <Link
-            href="/categories"
+            href="/allproducts"
             className="flex flex-col items-center justify-center bg-[#BDEA6F] text-[#074E46] rounded-xl hover:brightness-95 transition cursor-pointer py-5 sm:py-6 h-full"
           >
             <div className="bg-white rounded-full flex items-center justify-center p-2 mb-2 shadow-sm">

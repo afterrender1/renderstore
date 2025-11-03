@@ -152,7 +152,7 @@ export default function FruitsPage() {
             className="text-xl xs:text-2xl sm:text-3xl md:text-5xl font-extrabold leading-snug"
             style={{ fontFamily: "var(--font-fredoka)" }}
           >
-            Explore Fresh & Juicy Fruits 🍓
+            Explore Fresh & Juicy Fruits
           </h1>
           <p
             className="text-white/80 text-xs xs:text-sm sm:text-base max-w-md mx-auto md:mx-0"
@@ -169,7 +169,7 @@ export default function FruitsPage() {
         >
           <div className="relative w-[220px] xs:w-[300px] sm:w-[400px] md:w-[500px] lg:w-[550px] 2xl:w-[650px] h-40 xs:h-[220px] sm:h-[280px] md:h-[340px] lg:h-[380px] 2xl:h-[420px]">
             <Image
-              src="/images/fruits/hero-fruits.png"
+              src="/images/fruitshero.png"
               alt="Fruit Hero"
               fill
               className="object-contain rounded-2xl"

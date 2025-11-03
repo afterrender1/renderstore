@@ -168,7 +168,7 @@ export default function DailyProductsPage() {
         >
           <div className="relative w-[200px] xs:w-[280px] sm:w-[400px] md:w-[500px] lg:w-[550px] h-40 xs:h-[220px] sm:h-[280px] md:h-[340px] lg:h-[380px]">
             <Image
-              src="/images/herodaily.png"
+              src="/images/dailyp.png"
               alt="Daily Products Hero"
               fill
               className="object-cover rounded-2xl"
