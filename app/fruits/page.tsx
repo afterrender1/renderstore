@@ -8,6 +8,7 @@ import { Plus, Minus } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import { addToCart, increaseQty, decreaseQty } from "@/app/redux/CartSlice";
+import Link from "next/link";
 
 // 🍎 Sample Fruit Data (10)
 const fruits = [
@@ -197,100 +198,99 @@ export default function FruitsPage() {
           xl:grid-cols-[repeat(auto-fit,minmax(240px,1fr))] 
           2xl:grid-cols-[repeat(auto-fit,minmax(260px,1fr))]"
         >
-          {fruits.map((fruit, index) => {
-            const quantity = getQuantity(fruit.id);
-            return (
-              <motion.div
-                key={fruit.id}
-                variants={fadeZoomIn}
-                initial="hidden"
-                animate="visible"
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                className="bg-white select-none rounded-t-xl rounded-b-[10%] 
-                hover:shadow-md transition flex flex-col items-center justify-between 
-                pb-4 sm:pb-6 pt-4 h-[300px] xs:h-[320px] sm:h-[360px] md:h-[380px] w-full"
-                style={{ clipPath: "ellipse(150% 97% at 50% 0%)" }}
-              >
-                {/* Product Image */}
-                <div className="relative w-full flex justify-center items-center cursor-pointer h-[130px] xs:h-[150px] sm:h-[180px]">
-                  <Image
-                    src={fruit.image}
-                    alt={fruit.title}
-                    width={160}
-                    height={160}
-                    draggable={false}
-                    className="object-contain rounded-xl max-h-32 sm:max-h-40"
-                  />
-                </div>
+       {fruits.map((fruit, index) => {
+  const quantity = getQuantity(fruit.id);
+  return (
+    <motion.div
+      key={fruit.id}
+      variants={fadeZoomIn}
+      initial="hidden"
+      animate="visible"
+      transition={{ duration: 0.5, delay: index * 0.05 }}
+      className="bg-white select-none rounded-t-xl rounded-b-[10%] 
+                 hover:shadow-md transition flex flex-col items-center justify-between 
+                 pb-4 sm:pb-6 pt-4 h-[300px] xs:h-[320px] sm:h-[360px] md:h-[380px] w-full"
+      style={{ clipPath: "ellipse(150% 97% at 50% 0%)" }}
+    >
+      {/* Product Image with Link */}
+      <Link href={`/product/${fruit.id}`} className="relative w-full flex justify-center items-center cursor-pointer h-[130px] xs:h-[150px] sm:h-[180px]">
+        <Image
+          src={fruit.image}
+          alt={fruit.title}
+          width={160}
+          height={160}
+          draggable={false}
+          className="object-contain rounded-xl max-h-32 sm:max-h-40"
+        />
+      </Link>
 
-                {/* Product Info */}
-                <div className="flex flex-col items-center justify-between h-[100px] sm:h-[120px]">
-                  <h3
-                    className="text-center font-semibold text-gray-800 text-xs xs:text-sm sm:text-base mb-1 truncate w-[90%]"
-                    style={{ fontFamily: "var(--font-fredoka)" }}
-                    title={fruit.title}
-                  >
-                    {fruit.title}
-                  </h3>
-                  <p
-                    className="text-gray-500 text-center mb-1 capitalize text-xs sm:text-sm"
-                    style={{ fontFamily: "var(--font-fredoka)" }}
-                  >
-                    {fruit.category}
-                  </p>
-                  <span
-                    className="text-lg xs:text-xl sm:text-2xl font-bold text-gray-800 mb-2"
-                    style={{ fontFamily: "var(--font-montserrat)" }}
-                  >
-                    ${fruit.price}
-                  </span>
-                </div>
+      {/* Product Info */}
+      <div className="flex flex-col items-center justify-between h-[100px] sm:h-[120px]">
+        <h3
+          className="text-center font-semibold text-gray-800 text-xs xs:text-sm sm:text-base mb-1 truncate w-[90%]"
+          style={{ fontFamily: "var(--font-fredoka)" }}
+          title={fruit.title}
+        >
+          {fruit.title}
+        </h3>
+        <p
+          className="text-gray-500 text-center mb-1 capitalize text-xs sm:text-sm"
+          style={{ fontFamily: "var(--font-fredoka)" }}
+        >
+          {fruit.category}
+        </p>
+        <span
+          className="text-lg xs:text-xl sm:text-2xl font-bold text-gray-800 mb-2"
+          style={{ fontFamily: "var(--font-montserrat)" }}
+        >
+          ${fruit.price}
+        </span>
+      </div>
 
-                {/* Add / Counter */}
-                <div className="flex justify-center w-full">
-                  <AnimatePresence mode="wait">
-                    {quantity === 0 ? (
-                      <motion.button
-                        key="add"
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.8, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        onClick={() => handleAdd(fruit)}
-                        style={{ clipPath: "ellipse(130% 90% at 50% 0%)" }}
-                        className="cursor-pointer bg-[#F0F4EA] 
-                        px-8 xs:px-10 sm:px-12 md:px-16 py-2 hover:bg-gray-200 
-                        transition-colors rounded-lg flex items-center 
-                        justify-center font-semibold text-gray-700 text-xs xs:text-sm sm:text-base"
-                      >
-                        <Plus />
-                      </motion.button>
-                    ) : (
-                      <motion.div
-                        key="counter"
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.8, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        style={{ clipPath: "ellipse(130% 90% at 50% 0%)" }}
-                        className="cursor-pointer bg-[#B9EC5D] 
-                        px-4 xs:px-6 sm:px-8 py-2 flex items-center justify-center 
-                        gap-2 xs:gap-3 sm:gap-4 rounded-lg"
-                      >
-                        <button onClick={() => handleDecrease(fruit.id)}>
-                          <Minus />
-                        </button>
-                        <span className="font-semibold">{quantity}</span>
-                        <button onClick={() => handleIncrease(fruit.id)}>
-                          <Plus />
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </motion.div>
-            );
-          })}
+      {/* Add / Counter */}
+      <div className="flex justify-center w-full">
+        <AnimatePresence mode="wait">
+          {quantity === 0 ? (
+            <motion.button
+              key="add"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => handleAdd(fruit)}
+              style={{ clipPath: "ellipse(130% 90% at 50% 0%)" }}
+              className="cursor-pointer bg-[#F0F4EA] 
+                         px-8 xs:px-10 sm:px-12 md:px-16 py-2 hover:bg-gray-200 
+                         transition-colors rounded-lg flex items-center justify-center font-semibold text-gray-700 text-xs xs:text-sm sm:text-base"
+            >
+              <Plus />
+            </motion.button>
+          ) : (
+            <motion.div
+              key="counter"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              style={{ clipPath: "ellipse(130% 90% at 50% 0%)" }}
+              className="cursor-pointer bg-[#B9EC5D] 
+                         px-4 xs:px-6 sm:px-8 py-2 flex items-center justify-center gap-2 xs:gap-3 sm:gap-4 rounded-lg"
+            >
+              <button onClick={() => handleDecrease(fruit.id)}>
+                <Minus />
+              </button>
+              <span className="font-semibold">{quantity}</span>
+              <button onClick={() => handleIncrease(fruit.id)}>
+                <Plus />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+})}
+
         </div>
       </section>
     </>
