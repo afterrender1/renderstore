@@ -76,7 +76,7 @@ export default function GroceryCategories() {
                 variants={fadeZoomIn}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 whileHover={{ scale: 1.05 }}
-                className="flex items-center justify-between bg-white rounded-xl transition-all p-4 sm:p-5 md:p-6 lg:p-7 w-full cursor-pointer h-[120px] sm:h-[130px] md:h-[140px] hover:shadow-md"
+                className="flex items-center justify-between bg-white  rounded-xl transition-all p-4 sm:p-5 md:p-6 lg:p-7 w-full cursor-pointer h-[120px] sm:h-[130px] md:h-[140px] hover:shadow-md"
               >
                 {/* Left text */}
                 <div className="flex flex-col items-start whitespace-nowrap">

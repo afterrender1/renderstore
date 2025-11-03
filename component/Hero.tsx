@@ -161,7 +161,7 @@ export default function Hero() {
                   initial="hidden"
                   animate="visible"
                   transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="bg- rounded-t-xl rounded-b-[10%] hover:shadow-md transition flex flex-col items-center pb-5 sm:pb-6 w-full max-w-[200px] sm:max-w-none mx-auto"
+                  className=" rounded-t-xl rounded-b-[10%] hover:shadow-md transition flex flex-col bg-white items-center pb-5 sm:pb-6 w-full max-w-[200px] sm:max-w-none mx-auto"
                   style={{ clipPath: "ellipse(150% 97% at 50% 0%)" }}
                 >
                   <Link

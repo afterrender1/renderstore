@@ -5,7 +5,7 @@ import Hero from "./Hero";
 
 const Home = () => {
   return (
-    <main className="w-full min-h-screen overflow-x-hidden bg-white">
+    <main className="w-full min-h-screen overflow-x-hidden ">
       {/* Navbar - fully responsive already */}
       <Navbar />
 
