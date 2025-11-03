@@ -6,7 +6,11 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
-import { increaseQty, decreaseQty, removeFromCart } from "@/app/redux/CartSlice";
+import {
+  increaseQty,
+  decreaseQty,
+  removeFromCart,
+} from "@/app/redux/CartSlice";
 import AuthModal from "@/app/auth/AuthModel";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/app/firebaseConfig";
@@ -21,9 +25,11 @@ export default function Cart({ isOpen, onClose }: CartProps) {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
-  // ✅ Watch Firebase Auth changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -31,19 +37,15 @@ export default function Cart({ isOpen, onClose }: CartProps) {
     return () => unsubscribe();
   }, []);
 
-  // ✅ Close auth modal automatically once logged in
   useEffect(() => {
     if (user) setShowAuthModal(false);
   }, [user]);
 
-  // ✅ Handle checkout
   const handleCheckout = () => {
     if (!user) {
       setShowAuthModal(true);
     } else {
-      setShowAuthModal(false);
       alert(`Proceeding to checkout as ${user.email}`);
-      // router.push("/checkout");
     }
   };
 
@@ -57,7 +59,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
             animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-black z-40"
+            className="fixed inset-0 bg-black/50 z-40 backdrop-blur-[1px]"
             onClick={onClose}
           />
 
@@ -67,42 +69,46 @@ export default function Cart({ isOpen, onClose }: CartProps) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 120, damping: 20 }}
-            className="fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white z-50 shadow-2xl flex flex-col rounded-l-4xl overflow-hidden"
+            className="
+              fixed top-0 right-0 h-full 
+              w-[95%] sm:w-[450px] md:w-[480px] 
+              bg-white z-50 shadow-2xl flex flex-col 
+              rounded-l-3xl overflow-hidden
+            "
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b bg-[#074E46] text-white">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-6 border-b bg-[#074E46] text-white">
               <h2
-                className="text-2xl font-bold tracking-wide flex justify-center items-center gap-3"
+                className="text-lg sm:text-2xl font-bold tracking-wide flex items-center gap-2 sm:gap-3"
                 style={{ fontFamily: "var(--font-fredoka)" }}
               >
                 <BaggageClaim color="#BBEB75" /> Your Cart
               </h2>
               <button
                 onClick={onClose}
-                className="p-2 rounded-full hover:bg-white/10 transition cursor-pointer"
+                className="p-2 rounded-full hover:bg-white/10 transition"
               >
-                <X className="w-7 h-7" />
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
 
             {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto scrollbar-hidden p-6 space-y-6">
+            <div className="flex-1 overflow-y-auto scrollbar-hidden p-4 sm:p-6 space-y-4 sm:space-y-6">
               {cartItems.length === 0 ? (
-                <div className="text-gray-500 mt-20 text-lg flex flex-col justify-center h-80">
-                  <div
-                    className="text-3xl flex justify-center font-medium"
+                <div className="text-gray-500 mt-10 sm:mt-20 text-base sm:text-lg flex flex-col justify-center items-center text-center">
+                  <p
+                    className="text-xl sm:text-3xl font-medium mb-4"
                     style={{ fontFamily: "var(--font-fredoka)" }}
                   >
                     Your cart is empty
-                  </div>
-                  <div className="flex justify-center items-center mt-4">
-                    <Image
-                      height={200}
-                      width={200}
-                      alt="Empty cart illustration"
-                      src="/images/emptycart.png"
-                    />
-                  </div>
+                  </p>
+                  <Image
+                    height={200}
+                    width={200}
+                    alt="Empty cart"
+                    src="/images/emptycart.png"
+                    className="mx-auto"
+                  />
                 </div>
               ) : (
                 cartItems.map((item) => (
@@ -113,72 +119,68 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.2 }}
-                    className="flex items-center justify-between bg-gray-50 rounded-2xl p-4 shadow-sm hover:shadow-md transition"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between bg-gray-50 rounded-2xl p-3 sm:p-4 shadow-sm hover:shadow-md transition"
                   >
-                    <div className="flex items-start gap-4">
+                    {/* Product Info */}
+                    <div className="flex items-start gap-3 sm:gap-4">
                       <Image
                         src={item.thumbnail}
                         alt={item.title}
-                        width={90}
-                        height={90}
-                        className="rounded-xl object-cover"
+                        width={80}
+                        height={80}
+                        className="rounded-xl object-cover w-20 h-20 sm:w-[90px] sm:h-[90px]"
                       />
                       <div className="flex flex-col">
-                        <h3 className="font-bold text-gray-800 text-base leading-tight">
+                        <h3 className="font-bold text-gray-800 text-sm sm:text-base leading-tight">
                           {item.title.length > 30
-                            ? item.title.slice(0, 10) + "..."
+                            ? item.title.slice(0, 12) + "..."
                             : item.title}
                         </h3>
-                        <p className="text-gray-500 text-sm mt-1 line-clamp-2 max-w-[200px]">
+                        <p className="text-gray-500 text-xs sm:text-sm mt-1 line-clamp-2 max-w-[220px]">
                           {item.description
                             ? item.description.length > 30
                               ? item.description.slice(0, 18) + "..."
                               : item.description
                             : "No description available."}
                         </p>
-                        <p className="text-gray-800 mt-2 font-semibold text-base">
+                        <p className="text-gray-800 mt-2 font-semibold text-sm sm:text-base">
                           ${item.price} × {item.quantity}
                         </p>
                       </div>
                     </div>
 
-                    {/* Quantity Controls */}
-                    <div className="flex flex-col items-end gap-3">
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key="counter"
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          exit={{ scale: 0.8, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          style={{ clipPath: "ellipse(130% 90% at 50% 0%)" }}
-                          className="cursor-pointer bg-[#B9EC5D] px-8 py-2 flex items-center justify-center gap-4 rounded-lg shadow-sm"
+                    {/* Quantity + Remove */}
+                    <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between gap-2 sm:gap-3 mt-3 sm:mt-0">
+                      <motion.div
+                        key="counter"
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.2 }}
+                        className="bg-[#B9EC5D] px-4 sm:px-6 py-2 flex items-center justify-center gap-3 sm:gap-4 rounded-lg shadow-sm"
+                      >
+                        <button
+                          onClick={() => dispatch(decreaseQty(item.id))}
+                          className="text-gray-700 font-bold hover:scale-110 transition"
                         >
-                          <button
-                            onClick={() => dispatch(decreaseQty(item.id))}
-                            className="text-gray-700 font-bold text-lg hover:scale-110 transition"
-                          >
-                            <Minus />
-                          </button>
+                          <Minus size={16} />
+                        </button>
 
-                          <span className="text-gray-800 font-semibold min-w-6 text-center">
-                            {item.quantity}
-                          </span>
+                        <span className="text-gray-800 font-semibold min-w-[20px] text-center text-sm sm:text-base">
+                          {item.quantity}
+                        </span>
 
-                          <button
-                            onClick={() => dispatch(increaseQty(item.id))}
-                            className="text-gray-700 font-bold text-lg hover:scale-110 transition"
-                          >
-                            <Plus />
-                          </button>
-                        </motion.div>
-                      </AnimatePresence>
+                        <button
+                          onClick={() => dispatch(increaseQty(item.id))}
+                          className="text-gray-700 font-bold hover:scale-110 transition"
+                        >
+                          <Plus size={16} />
+                        </button>
+                      </motion.div>
 
-                      {/* Remove Button */}
                       <motion.button
                         onClick={() => dispatch(removeFromCart(item.id))}
                         whileTap={{ scale: 0.9 }}
-                        className="text-red-500 hover:text-red-600 text-sm flex items-center gap-1 mt-1"
+                        className="text-red-500 hover:text-red-600 text-xs sm:text-sm flex items-center gap-1"
                       >
                         <Trash2 className="w-4 h-4" /> Remove
                       </motion.button>
@@ -189,8 +191,8 @@ export default function Cart({ isOpen, onClose }: CartProps) {
             </div>
 
             {/* Footer */}
-            <div className="p-6 border-t bg-white shadow-inner">
-              <div className="flex justify-between mb-4 text-xl font-bold text-gray-800">
+            <div className="p-4 sm:p-6 border-t bg-white shadow-inner">
+              <div className="flex justify-between mb-3 sm:mb-4 text-lg sm:text-xl font-bold text-gray-800">
                 <span>Total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
@@ -198,7 +200,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={handleCheckout}
-                className="w-full bg-[#074E46] text-white py-4 cursor-pointer rounded-xl font-semibold text-lg hover:bg-[#0a5a4f] transition"
+                className="w-full bg-[#074E46] text-white py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg hover:bg-[#0a5a4f] transition"
                 style={{ fontFamily: "var(--font-fredoka)" }}
               >
                 Proceed to Checkout →
@@ -206,16 +208,15 @@ export default function Cart({ isOpen, onClose }: CartProps) {
             </div>
           </motion.div>
 
-          {/* 🟢 Animated Auth Modal */}
-         <AnimatePresence>
-  {showAuthModal && (
-    <AuthModal
-      isOpen={showAuthModal}
-      onClose={() => setShowAuthModal(false)}
-    />
-  )}
-</AnimatePresence>
-
+          {/* Auth Modal */}
+          <AnimatePresence>
+            {showAuthModal && (
+              <AuthModal
+                isOpen={showAuthModal}
+                onClose={() => setShowAuthModal(false)}
+              />
+            )}
+          </AnimatePresence>
         </>
       )}
     </AnimatePresence>

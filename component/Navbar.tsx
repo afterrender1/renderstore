@@ -1,13 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  Menu,
-  Search,
-  ShoppingCart,
-  BaggageClaim,
-  Zap,
-} from "lucide-react";
+import { Menu, Search, ShoppingCart, BaggageClaim, Zap } from "lucide-react";
 import Cart from "./Cart";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -18,10 +12,9 @@ import Sidebar from "./SideBar";
 export default function Navbar() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const cartItems = useSelector((state: RootState) => state.cart.items);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const cartItems = useSelector((state: RootState) => state.cart.items);
 
-  // ✅ Prevent hydration mismatch
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -30,84 +23,113 @@ export default function Navbar() {
 
   return (
     <motion.header
-      initial={{ opacity: 0, scale: 0.8, y: -10 }}
+      initial={{ opacity: 0, scale: 0.9, y: -10 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{
-        duration: 0.5,
-        ease: "easeOut",
-      }}
-      className="bg-[#074E46] select-none mt-4 mx-18 text-white py-4 px-8 flex items-center justify-between shadow-md rounded-xl"
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="
+        bg-[#074E46] select-none mt-4 mx-2 sm:mx-4 md:mx-8 
+        lg:mx-12 xl:mx-18 text-white 
+        py-3 sm:py-4 px-4 sm:px-6 md:px-8 
+        rounded-xl shadow-md 
+        flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-4
+      "
     >
-      {/* Left: Logo */}
-      <div className="flex items-center gap-3">
-        {/* ✅ Toggle Sidebar */}
+      {/* 🔹 Top Row: Logo + Menu + Cart (mobile layout) */}
+      <div className="w-full flex items-center justify-between md:w-auto">
+        {/* Menu (mobile) */}
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="p-2 hover:bg-white/10 rounded-full cursor-pointer"
+          className="p-2 hover:bg-white/10 rounded-full -shrink-0 "
         >
           <Menu size={22} />
         </button>
 
-        <Link href="/">
-          <div className="flex items-center gap-1">
-            <span className="text-xl">
-              <BaggageClaim color="#BBEB75" />
-            </span>
-            <span className="text-lg font-semibold">RenderStore</span>
-          </div>
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2">
+          <BaggageClaim color="#BBEB75" className="w-5 h-5 sm:w-6 sm:h-6" />
+          <span className="text-base sm:text-lg font-semibold tracking-tight">
+            RenderStore
+          </span>
         </Link>
+
+        {/* Cart (mobile) */}
+        <div className="flex items-center gap-3 md:hidden">
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setIsCartOpen(true)}
+            className="relative bg-white text-black p-2 rounded-full shadow-md hover:bg-[#b2d16f] transition"
+          >
+            <ShoppingCart size={18} />
+            <span className="absolute -top-1 -right-1 bg-[#074E46] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              {cartCount}
+            </span>
+          </motion.button>
+          <img
+            src="https://i.pravatar.cc/40"
+            alt="user"
+            className="w-8 h-8 rounded-full border border-white"
+          />
+        </div>
       </div>
 
       {/* Sidebar Drawer */}
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
-      {/* Middle: Search Bar */}
-      <div className="flex items-center mr-20 bg-white text-gray-800 rounded-full w-[40%] px-3 py-2 shadow-sm focus-within:ring-2 focus-within:ring-[#BBEB75]">
+      {/* 🔹 Middle: Search Bar (full-width on mobile, centered on md+) */}
+      <div
+        className="
+          w-full md:w-[55%] lg:w-[40%]
+          bg-white text-gray-800 rounded-full
+          px-3 py-2 flex items-center shadow-sm
+          focus-within:ring-2 focus-within:ring-[#BBEB75]
+          transition order-3 md:order-2
+        "
+      >
         <input
           type="text"
           placeholder="Search for Grocery, Stores, Vegetable or Meat"
-          className="w-full mx-3 outline-none bg-transparent placeholder-gray-500 text-sm p-1"
+          className="w-full bg-transparent text-xs sm:text-sm md:text-base outline-none px-2 placeholder-gray-500"
         />
-        <Search className="text-gray-500 mr-2" size={18} />
+        <Search className="text-gray-500" size={18} />
       </div>
 
-      {/* Right: Promo + Cart */}
-      <div className="flex items-center gap-4">
-        <p className="text-sm flex items-center gap-1">
+      {/* 🔹 Right: Promo + Cart + Avatar (desktop only) */}
+      <div
+        className="
+          hidden md:flex items-center gap-4 
+          order-2 md:order-3
+          w-full md:w-auto justify-end
+        "
+      >
+        {/* Promo */}
+        <p className="hidden lg:flex text-sm xl:text-base items-center gap-1 text-white/90">
           <Zap color="#BBEB75" size={18} />
-          <span>Order now and get it within</span>
+          <span>Order now & get it in</span>
           <span className="text-yellow-300 font-semibold">15 min!</span>
         </p>
 
-        {/* Cart Button */}
+        {/* Cart */}
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsCartOpen(true)}
-          className="relative bg-white text-black p-3 rounded-full shadow-md transition-all hover:text-gray-800 hover:bg-[#b2d16f] cursor-pointer duration-300 flex items-center justify-center"
+          className="relative bg-white text-black p-3 rounded-full shadow-md hover:bg-[#b2d16f] transition"
         >
           <ShoppingCart size={20} />
-          {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-[#074E46] text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
-              {cartCount}
-            </span>
-          )}
-          {cartCount === 0 && (
-            <span className="absolute -top-1 -right-1 bg-[#074E46] text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
-              0
-            </span>
-          )}
+          <span className="absolute -top-1 -right-1 bg-[#074E46] text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+            {cartCount}
+          </span>
         </motion.button>
 
-        {/* Cart Drawer */}
-        <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-
-        {/* User Avatar */}
+        {/* Avatar */}
         <img
           src="https://i.pravatar.cc/40"
           alt="user"
-          className="w-8 h-8 rounded-full border border-white"
+          className="w-9 h-9 rounded-full border border-white object-cover"
         />
       </div>
+
+      {/* Cart Drawer (global) */}
+      <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </motion.header>
   );
 }

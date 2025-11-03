@@ -1,17 +1,18 @@
-"use client"
-import React from 'react'
-import Navbar from './Navbar'
-import Hero from './Hero'
+"use client";
+import React from "react";
+import Navbar from "./Navbar";
+import Hero from "./Hero";
 
 const Home = () => {
   return (
-    <>
-    <Navbar/>
-    <Hero/>
-    
-    
-    </>
-  )
-}
+    <main className="w-full min-h-screen overflow-x-hidden bg-white">
+      {/* Navbar - fully responsive already */}
+      <Navbar />
 
-export default Home
+      {/* Hero + Categories + Products - fully responsive */}
+      <Hero />
+    </main>
+  );
+};
+
+export default Home;
