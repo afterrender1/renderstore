@@ -23,11 +23,13 @@ export default function GroceryCategories() {
       image: '/images/car.png',
     },
     {
-      title: 'daily Products',
+      title: 'Daily Products',
+      href: '/dailyproducts',
+
       subtitle: 'In store delivery',
       icon: Cookie,
       color: 'text-amber-700',
-      image: '/images/snaks.png',
+      image: '/images/daily.png',
     },
     {
       title: 'Fruits',
