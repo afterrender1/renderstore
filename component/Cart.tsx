@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Trash2, BaggageClaim, Plus, Minus } from "lucide-react";
+import { X, Trash2, BaggageClaim, Plus, Minus , LoaderCircle } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const [loading , setLoading] = useState(false)
 
   // ✅ Firebase auth listener
   useEffect(() => {
@@ -65,6 +66,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
       const data = await res.json();
 
       if (data?.url) {
+        setLoading(true)
         window.location.href = data.url;
       } else {
         console.error("Checkout failed:", data);
@@ -201,10 +203,10 @@ export default function Cart({ isOpen, onClose }: CartProps) {
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={handleCheckout}
-                className="w-full bg-[#074E46] text-white py-4 rounded-xl font-semibold text-lg hover:bg-[#0a5a4f] transition"
+                className="w-full bg-[#074E46] text-white flex justify-center  py-4 rounded-xl font-semibold text-lg hover:bg-[#0a5a4f] transition"
                 style={{ fontFamily: "var(--font-fredoka)" }}
               >
-                Proceed to Checkout →
+                Proceed to Checkout → {loading && <LoaderCircle className="animate-spin ml-2"/>}
               </motion.button>
             </div>
           </motion.div>

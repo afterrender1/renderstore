@@ -12,7 +12,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/app/firebaseConfig";
-import { X } from "lucide-react";
+import { X  , LoaderCircle} from "lucide-react";
 
 type AuthModalProps = {
   isOpen: boolean;
@@ -26,6 +26,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [error, setError] = useState("");
   const router = useRouter();
    const [showModal, setShowModal] = useState(false);
+   
 
   const fadeZoom = {
     hidden: { opacity: 0, scale: 0.9, y: 20 },
@@ -171,13 +172,15 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 disabled={loading}
                 className="w-full cursor-pointer bg-[#BDEA6F] text-[#074E46] py-3 rounded-xl font-semibold hover:bg-[#a6e55c] transition"
               >
-                {loading
-                  ? isLogin
-                    ? "Logging in..."
-                    : "Signing up..."
-                  : isLogin
-                  ? "Login"
-                  : "Sign Up"}
+               {loading ? (
+  <div className="flex items-center justify-center gap-2">
+    <span>{isLogin ? "Logging in" : "Signing up"}...</span>
+    <LoaderCircle className="animate-spin ml-2" />
+  </div>
+) : (
+  isLogin ? "Login" : "Sign Up"
+)}
+
               </button>
             </form>
 
