@@ -95,7 +95,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 120, damping: 20 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
             className="fixed top-0 right-0 h-full w-[95%] sm:w-[450px] md:w-[480px] bg-white z-50 shadow-2xl flex flex-col rounded-l-3xl overflow-hidden"
           >
             {/* Header */}
