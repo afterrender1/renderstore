@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/component/Navbar";
-import { LoaderCircle, Plus, Minus } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import { addToCart, increaseQty, decreaseQty } from "@/app/redux/CartSlice";
@@ -18,7 +18,7 @@ type Product = {
   description: string;
 };
 
-// ✅ Combine all your product arrays
+// ✅ Combine product arrays
 const electronics: Product[] = [
   { id: "elec-1", title: "Wireless Headphones", image: "/images/electronics/wirelessheadphones.png", price: 59.99, category: "electronics", description: "Noise-cancelling wireless headphones with deep bass." },
   { id: "elec-2", title: "17 Pro Max", image: "/images/electronics/promax.png", price: 799.99, category: "electronics", description: "Next-gen smartphone with powerful performance and camera." },
@@ -85,28 +85,17 @@ export default function AllProductsPage() {
 
   const handleAdd = (product: Product) => {
     // @ts-ignore
-    dispatch(
-      addToCart({
-    // @ts-ignore
-
-        id: product.id,
-        title: product.title,
-        price: product.price,
-        thumbnail: product.image,
-        description: product.description,
-      })
-    );
+    dispatch(addToCart({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      thumbnail: product.image,
+      description: product.description,
+    }));
   };
 
-  const handleIncrease = (id: string) => {
-    // @ts-ignore
-    dispatch(increaseQty(id));
-  };
-
-  const handleDecrease = (id: string) => {
-    // @ts-ignore
-    dispatch(decreaseQty(id));
-  };
+  const handleIncrease = (id: string) => dispatch(increaseQty(id));
+  const handleDecrease = (id: string) => dispatch(decreaseQty(id));
 
   const fadeZoomIn = {
     hidden: { opacity: 0, scale: 0.9, y: 30 },
@@ -117,130 +106,125 @@ export default function AllProductsPage() {
     <>
       <Navbar />
 
+      {/* Header Section */}
       <motion.section
         initial="hidden"
         animate="visible"
         variants={fadeZoomIn}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="bg-[#074E46] mt-5 text-white rounded-t-4xl mx-18 flex flex-col items-center justify-center px-6 py-10"
+        className="bg-[#074E46] mt-5 text-white rounded-t-[2rem] mx-2 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 2xl:mx-48 flex flex-col items-center justify-center px-4 sm:px-6 py-10"
       >
-        <h1 className="text-4xl font-bold font-fredoka">All Products</h1>
-        <p className="text-white/80 mt-3 font-fredoka text-center max-w-lg">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold font-fredoka">All Products</h1>
+        <p className="text-white/80 mt-3 font-fredoka text-center max-w-2xl text-sm sm:text-base md:text-lg">
           Explore all categories in one place — electronics, fruits, toys, and daily essentials.
         </p>
       </motion.section>
 
-   <section className="px-6 md:px-16 py-10">
-  <div
-    className="
-      grid gap-6 
-      grid-cols-2 
-      sm:grid-cols-3 
-      md:grid-cols-4 
-      lg:grid-cols-5
-    "
-  >
-    {allProducts.map((product, index) => {
-      const quantity = getQuantity(product.id);
-      return (
-           <motion.div
-                      key={product.id}
-                      variants={fadeZoomIn}
-                      initial="hidden"
-                      animate="visible"
-                      transition={{ duration: 0.5, delay: index * 0.05 }}
-                      className="bg-white select-none rounded-t-xl rounded-b-[10%] 
-                      hover:shadow-md transition flex flex-col items-center justify-between 
-                      pb-4 sm:pb-6 pt-4 h-[300px] xs:h-[320px] sm:h-[360px] md:h-[380px] w-full"
-                      style={{ clipPath: "ellipse(150% 97% at 50% 0%)" }}
-                    >
-          {/* Product Image */}
-          <div className="relative w-full flex justify-center items-center h-[180px]">
-            <Image
-              src={product.image}
-              alt={product.title}
-              width={160}
-              height={160}
-              className="object-contain rounded-xl"
-            />
-          </div>
+      {/* Products Grid */}
+      <section className="px-3 sm:px-6 md:px-10 lg:px-16 xl:px-24 2xl:px-32 py-10">
+        <div
+          className="
+            grid gap-4 sm:gap-6 md:gap-8 
+            grid-cols-2 
+            sm:grid-cols-3 
+            md:grid-cols-4 
+            lg:grid-cols-5 
+            xl:grid-cols-5
+            2xl:grid-cols-5 
+            3xl:grid-cols-7
+          "
+        >
+          {allProducts.map((product, index) => {
+            const quantity = getQuantity(product.id);
+            return (
+              <motion.div
+                key={product.id}
+                variants={fadeZoomIn}
+                initial="hidden"
+                animate="visible"
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                className="bg-white select-none rounded-t-xl rounded-b-[10%] hover:shadow-lg transition flex flex-col items-center justify-between 
+                  pb-4 sm:pb-5 pt-4 h-[280px] xs:h-[300px] sm:h-[340px] md:h-[360px] lg:h-[380px] xl:h-[400px]"
+                style={{ clipPath: 'ellipse(150% 97% at 50% 0%)' }}
+              >
+                {/* Product Image */}
+                <div className="relative w-full flex justify-center items-center h-[150px] sm:h-[180px] md:h-[200px]">
+                  <Image
+                    src={product.image}
+                    alt={product.title}
+                    width={180}
+                    height={180}
+                    className="object-contain rounded-xl"
+                  />
+                </div>
 
-          {/* Product Info */}
-          <div className="flex flex-col items-center justify-between h-[120px]">
-            <h3 className="text-center font-semibold text-gray-800 text-base mb-1 truncate w-[90%]">
-              {product.title}
-            </h3>
-            <p className="text-gray-500 text-sm capitalize">{product.category}</p>
-            <span className="text-xl font-bold text-gray-800 mb-2">
-              ${product.price}
-            </span>
-          </div>
+                {/* Product Info */}
+                <div className="flex flex-col items-center justify-between h-[120px]">
+                  <h3 className="text-center font-semibold text-gray-800 text-sm sm:text-base md:text-lg mb-1 truncate w-[90%]">
+                    {product.title}
+                  </h3>
+                  <p className="text-gray-500 text-xs sm:text-sm capitalize">{product.category}</p>
+                  <span className="text-lg sm:text-xl font-bold text-gray-800 mb-2">${product.price}</span>
+                </div>
 
-          {/* Add to Cart / Counter */}
-                      <div className="flex justify-center w-full">
-                           <AnimatePresence mode="wait">
-                             {quantity === 0 ? (
-                               <motion.button
-                                 key="add"
-                                 initial={{ scale: 0.8, opacity: 0 }}
-                                 animate={{ scale: 1, opacity: 1 }}
-                                 exit={{ scale: 0.8, opacity: 0 }}
-                                 transition={{ duration: 0.2 }}
-                                 onClick={(e) => {
-                                   e.stopPropagation();
-                                   handleAdd(product);
-                                 }}
-                                 style={{ clipPath: "ellipse(130% 90% at 50% 0%)" }}
-                                 className="cursor-pointer bg-[#F0F4EA] 
-                                 px-8 xs:px-10 sm:px-12 md:px-16 py-2 hover:bg-gray-200 
-                                 transition-colors rounded-lg flex items-center 
-                                 justify-center font-semibold text-gray-700 text-xs xs:text-sm sm:text-base"
-                               >
-                                 <Plus />
-                               </motion.button>
-                             ) : (
-                               <motion.div
-                                 key="counter"
-                                 initial={{ scale: 0.8, opacity: 0 }}
-                                 animate={{ scale: 1, opacity: 1 }}
-                                 exit={{ scale: 0.8, opacity: 0 }}
-                                 transition={{ duration: 0.2 }}
-                                 style={{ clipPath: "ellipse(130% 90% at 50% 0%)" }}
-                                 className="cursor-pointer bg-[#B9EC5D] 
-                                 px-4 xs:px-6 sm:px-8 py-2 flex items-center justify-center 
-                                 gap-2 xs:gap-3 sm:gap-4 rounded-lg"
-                               >
-                                 <button
-                                   onClick={(e) => {
-                                     e.stopPropagation();
-                                     handleDecrease(product.id);
-                                   }}
-                                   className="cursor-pointer text-gray-700 font-bold text-sm xs:text-base sm:text-lg hover:scale-110 transition"
-                                 >
-                                   <Minus />
-                                 </button>
-                                 <span className="text-gray-800 font-semibold text-xs xs:text-sm sm:text-base">
-                                   {quantity}
-                                 </span>
-                                 <button
-                                   onClick={(e) => {
-                                     e.stopPropagation();
-                                     handleIncrease(product.id);
-                                   }}
-                                   className="cursor-pointer text-gray-700 font-bold text-sm xs:text-base sm:text-lg hover:scale-110 transition"
-                                 >
-                                   <Plus />
-                                 </button>
-                               </motion.div>
-                             )}
-                           </AnimatePresence>
-                         </div>
-        </motion.div>
-      );
-    })}
-  </div>
-</section>
-
+                {/* Add to Cart / Counter */}
+                <div className="flex justify-center w-full">
+                  <AnimatePresence mode="wait">
+                    {quantity === 0 ? (
+                      <motion.button
+                        key="add"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.8, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAdd(product);
+                        }}
+                        style={{ clipPath: "ellipse(130% 90% at 50% 0%)" }}
+                        className="cursor-pointer bg-[#F0F4EA] px-6 sm:px-8 md:px-10 lg:px-12 py-2 hover:bg-gray-200 
+                          transition-colors rounded-lg flex items-center justify-center font-semibold text-gray-700 text-xs sm:text-sm md:text-base"
+                      >
+                        <Plus />
+                      </motion.button>
+                    ) : (
+                      <motion.div
+                        key="counter"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.8, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        style={{ clipPath: "ellipse(130% 90% at 50% 0%)" }}
+                        className="cursor-pointer bg-[#B9EC5D] px-4 sm:px-6 md:px-8 py-2 flex items-center justify-center gap-2 sm:gap-3 rounded-lg"
+                      >
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDecrease(product.id);
+                          }}
+                          className="text-gray-700 font-bold hover:scale-110 transition"
+                        >
+                          <Minus />
+                        </button>
+                        <span className="text-gray-800 font-semibold text-xs sm:text-sm md:text-base">{quantity}</span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleIncrease(product.id);
+                          }}
+                          className="text-gray-700 font-bold hover:scale-110 transition"
+                        >
+                          <Plus />
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </section>
     </>
   );
 }
