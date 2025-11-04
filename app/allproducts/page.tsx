@@ -144,7 +144,7 @@ export default function AllProductsPage() {
                 animate="visible"
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 className="bg-white select-none rounded-t-xl rounded-b-[10%] hover:shadow-lg transition flex flex-col items-center justify-between 
-                  pb-4 sm:pb-5 pt-4 h-[280px] xs:h-[300px] sm:h-[340px] md:h-[360px] lg:h-[380px] xl:h-[400px]"
+                  pb-4 sm:pb-5 pt-4 h-[300px] xs:h-[300px] sm:h-[340px] md:h-[360px] lg:h-[380px] xl:h-[400px]"
                 style={{ clipPath: 'ellipse(150% 97% at 50% 0%)' }}
               >
                 {/* Product Image */}
@@ -168,7 +168,7 @@ export default function AllProductsPage() {
                 </div>
 
                 {/* Add to Cart / Counter */}
-                <div className="flex justify-center w-full">
+                <div className="flex justify-center  w-full">
                   <AnimatePresence mode="wait">
                     {quantity === 0 ? (
                       <motion.button
