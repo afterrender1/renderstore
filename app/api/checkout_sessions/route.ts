@@ -36,6 +36,7 @@ export async function POST(req: Request) {
       success_url: process.env.NEXT_PUBLIC_SUCCESS_URL + "?session_id={CHECKOUT_SESSION_ID}",
       cancel_url: process.env.NEXT_PUBLIC_CANCEL_URL,
     });
+console.log("Server has Stripe secret key:", !!process.env.STRIPE_SECRET_KEY);
 
     return NextResponse.json({ url: session.url });
   } catch (err: any) {
