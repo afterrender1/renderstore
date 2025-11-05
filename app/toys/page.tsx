@@ -233,7 +233,7 @@ export default function ToysPage() {
               >
                 {/* Image */}
                 <Link
-                  href={`/toys/${product.id}`}
+                  href={`/product/${product.id}`}
                   className="relative w-full flex justify-center items-center cursor-pointer h-[130px] xs:h-[150px] sm:h-[180px]"
                 >
                   <Image

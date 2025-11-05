@@ -8,6 +8,7 @@ import { LoaderCircle, Plus, Minus } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import { addToCart, increaseQty, decreaseQty } from "@/app/redux/CartSlice";
+import Link from "next/link";
 
 const dailyProducts = [
   {
@@ -210,6 +211,10 @@ export default function DailyProductsPage() {
                 style={{ clipPath: "ellipse(150% 97% at 50% 0%)" }}
               >
                 <div className="relative w-full flex justify-center items-center h-[130px] xs:h-[150px] sm:h-[180px]">
+                  <Link
+                                       href={`/product/${product.id}`}
+
+                   >
                   <Image
                     src={product.image}
                     alt={product.title}
@@ -218,6 +223,8 @@ export default function DailyProductsPage() {
                     draggable={false}
                     className="object-contain rounded-xl max-h-32 sm:max-h-40"
                   />
+                  </Link>
+
                 </div>
 
                 <div className="flex flex-col items-center justify-between h-[100px] sm:h-[120px]">

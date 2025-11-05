@@ -239,7 +239,7 @@ export default function ElectronicsPage() {
                 >
                   {/* Image */}
                   <Link
-                    href="#"
+                    href={`/product/${product.id}`}
                     className="relative w-full flex justify-center items-center cursor-pointer h-[150px] xs:h-[170px] sm:h-[190px]"
                   >
                     <Image

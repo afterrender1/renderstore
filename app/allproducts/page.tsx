@@ -8,6 +8,7 @@ import { Plus, Minus } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import { addToCart, increaseQty, decreaseQty } from "@/app/redux/CartSlice";
+import Link from "next/link";
 
 type Product = {
   id: string;
@@ -149,6 +150,11 @@ export default function AllProductsPage() {
               >
                 {/* Product Image */}
                 <div className="relative w-full flex justify-center items-center h-[150px] sm:h-[180px] md:h-[200px]">
+                  <Link
+                  
+                                    href={`/product/${product.id}`}
+>
+                  
                   <Image
                     src={product.image}
                     alt={product.title}
@@ -156,6 +162,8 @@ export default function AllProductsPage() {
                     height={180}
                     className="object-contain rounded-xl"
                   />
+                  </Link>
+
                 </div>
 
                 {/* Product Info */}
