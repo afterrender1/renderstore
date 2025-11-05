@@ -11,7 +11,7 @@ export default function Footer() {
   return (
     <footer className="relative bg-[#063D38] text-white mt-16 mx-4 sm:mx-6 md:mx-10 rounded-3xl overflow-hidden shadow-md">
       {/* Gradient Accent */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#063D38] to-[#0A5A4F] opacity-90"></div>
+      <div className="absolute inset-0 bg-linear-to-t from-[#063D38] to-[#0A5A4F] opacity-90"></div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 md:px-16 lg:px-20 py-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
         {/* Brand */}
