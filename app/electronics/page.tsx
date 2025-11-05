@@ -21,48 +21,7 @@ type Product = {
 };
 
 // ✅ Electronics Data
-const electronics: Product[] = [
-  {
-    id: "elec-1",
-    title: "Wireless Headphones",
-    image: "/images/electronics/wirelessheadphones.png",
-    price: 59.99,
-    category: "electronics",
-    description: "Noise-cancelling wireless headphones with deep bass.",
-  },
-  {
-    id: "elec-2",
-    title: "17 Pro Max",
-    image: "/images/electronics/promax.png",
-    price: 799.99,
-    category: "electronics",
-    description: "Next-gen smartphone with powerful performance and camera.",
-  },
-  {
-    id: "elec-3",
-    title: "Bluetooth Speaker",
-    image: "/images/electronics/speaker.png",
-    price: 89.99,
-    category: "electronics",
-    description: "Portable waterproof speaker with crisp sound.",
-  },
-  {
-    id: "elec-4",
-    title: "Smartwatch Ultra",
-    image: "/images/electronics/smartwatch.png",
-    price: 199.99,
-    category: "electronics",
-    description: "Advanced smartwatch with heart rate monitor and GPS.",
-  },
-  {
-    id: "elec-5",
-    title: "Gaming Mouse",
-    image: "/images/electronics/mouse.png",
-    price: 49.99,
-    category: "electronics",
-    description: "Ergonomic RGB gaming mouse with adjustable DPI.",
-  },
-];
+const electronics: Product[] = [ { id: "elec-1", title: "Wireless Headphones", image: "/images/electronics/wirelessheadphones.png", price: 59.99, category: "electronics", description: "Noise-cancelling wireless headphones with deep bass.", }, { id: "elec-2", title: "17 Pro Max", image: "/images/electronics/promax.png", price: 799.99, category: "electronics", description: "Next-gen smartphone with powerful performance and camera.", }, { id: "elec-3", title: "Bluetooth Speaker", image: "/images/electronics/speaker.png", price: 89.99, category: "electronics", description: "Portable waterproof speaker with crisp sound.", }, { id: "elec-4", title: "Smartwatch Ultra", image: "/images/electronics/smartwatch.png", price: 199.99, category: "electronics", description: "Advanced smartwatch with heart rate monitor and GPS.", }, { id: "elec-5", title: "Gaming Mouse", image: "/images/electronics/mouse.png", price: 49.99, category: "electronics", description: "Ergonomic RGB gaming mouse with adjustable DPI.", }, { id: "elec-6", title: "Mechanical Keyboard", image: "/images/electronics/keyboard.png", price: 119.99, category: "electronics", description: "RGB backlit mechanical keyboard with blue switches.", }, { id: "elec-7", title: "Laptop Stand", image: "/images/electronics/laptopstand.png", price: 34.99, category: "electronics", description: "Adjustable aluminum stand for laptops and tablets.", }, { id: "elec-8", title: "Power Bank 20000mAh", image: "/images/electronics/powerbank.png", price: 39.99, category: "electronics", description: "Fast-charging power bank for mobile and tablets.", }, { id: "elec-9", title: "HD Webcam", image: "/images/electronics/hdwebcam.png", price: 69.99, category: "electronics", description: "1080p webcam with built-in microphone for streaming.", }, { id: "elec-10", title: "Wireless Charger Pad", image: "/images/electronics/wirelesscharger.png", price: 24.99, category: "electronics", description: "Fast wireless charging pad compatible with all Qi devices.", }, ];
 
 export default function ElectronicsPage() {
   const [loading, setLoading] = useState(false);
