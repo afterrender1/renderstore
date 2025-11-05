@@ -6,7 +6,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
-import { increaseQty, decreaseQty, removeFromCart } from "@/app/redux/CartSlice";
+import { increaseQty, decreaseQty, removeFromCart , clearCart } from "@/app/redux/CartSlice";
 import AuthModal from "@/app/auth/AuthModel";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/app/firebaseConfig";

@@ -4,10 +4,15 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { CheckCircle2, Package, Truck, Home, ShoppingBag } from "lucide-react";
+import { useDispatch, UseDispatch } from "react-redux";
+import {clearCart} from "@/app/redux/CartSlice"
 
 /**
  * Clean, classic Success page — simplified UI, minimal animation, accessible
  */
+
+
+
 
 const TimelineStep = ({
   label,
@@ -34,6 +39,7 @@ const TimelineStep = ({
 export default function SuccessPage() {
   const [orderNumber] = useState(() => Math.floor(Math.random() * 900000) + 100000);
   const [step, setStep] = useState<number>(1);
+  const dispatch = useDispatch()
 
   // subtle simulated progress: move from placed -> processing -> shipping
   useEffect(() => {
@@ -44,6 +50,10 @@ export default function SuccessPage() {
       clearTimeout(t2);
     };
   }, []);
+
+  useEffect(() => {
+ dispatch(clearCart())
+}, [])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
