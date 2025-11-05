@@ -2,41 +2,49 @@
 
 import React from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { XCircle, Home } from "lucide-react";
 
-const CancelPage = () => {
+export default function CancelPage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4">
-      <div className="max-w-md w-full bg-white p-10 rounded-2xl shadow-md text-center">
-        <svg
-          className="mx-auto mb-6 w-16 h-16 text-red-500"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
+      <motion.main
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="w-full max-w-md bg-white rounded-2xl shadow-md border border-slate-100 p-8 text-center"
+      >
+        {/* Icon */}
+        <div className="flex justify-center mb-5">
+          <div className="w-16 h-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center shadow-sm">
+            <XCircle className="w-9 h-9" strokeWidth={2.2} />
+          </div>
+        </div>
 
-        <h1 className="text-3xl font-extrabold text-gray-900 mb-4">
+        {/* Heading */}
+        <h1 className="text-2xl font-semibold text-slate-900 mb-2">
           Payment Canceled
         </h1>
-
-        <p className="text-gray-600 mb-6">
-          Unfortunately, your payment was not completed. Please try again or continue shopping.
+        <p className="text-slate-600 mb-6">
+          Your payment was not completed. You can retry or return to the home
+          page to continue shopping.
         </p>
 
-        <Link href="/">
-          <button className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition">
-            Back to Shop
-          </button>
+        {/* Button */}
+        <Link
+          href="/"
+          className="inline-flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition"
+          aria-label="Back to Shop"
+        >
+          <Home size={16} />
+          Back to Shop
         </Link>
-      </div>
+
+        {/* Subtext */}
+        <p className="mt-4 text-xs text-slate-500">
+          If this was an error, no charges were made to your account.
+        </p>
+      </motion.main>
     </div>
   );
-};
-
-export default CancelPage;
+}

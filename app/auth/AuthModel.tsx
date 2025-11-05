@@ -121,7 +121,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
             {/* Close */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition"
+              className="absolute top-4 cursor-pointer right-4 text-gray-500 hover:text-gray-700 transition"
             >
               <X className="w-6 h-6" />
             </button>
@@ -173,7 +173,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 className="w-full cursor-pointer bg-[#BDEA6F] text-[#074E46] py-3 rounded-xl font-semibold hover:bg-[#a6e55c] transition"
               >
                {loading ? (
-  <div className="flex items-center justify-center gap-2">
+  <div className="flex items-center cursor-pointer justify-center gap-2">
     <span>{isLogin ? "Logging in" : "Signing up"}...</span>
     <LoaderCircle className="animate-spin ml-2" />
   </div>
@@ -190,7 +190,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
               <button
                 type="button"
                 onClick={() => setIsLogin(!isLogin)}
-                className="text-[#074E46] font-semibold hover:text-[#052f29]"
+                className="text-[#074E46] font-semibold cursor-pointer hover:text-[#052f29]"
               >
                 {isLogin ? "Sign Up" : "Login"}
               </button>
@@ -207,7 +207,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
             <button
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 py-3 rounded-xl hover:bg-gray-100 text-gray-900 font-medium transition shadow-sm"
+              className="w-full cursor-pointer flex items-center justify-center gap-2 bg-white border border-gray-300 py-3 rounded-xl hover:bg-gray-100 text-gray-900 font-medium transition shadow-sm"
             >
               <img
                 src="https://www.svgrepo.com/show/475656/google-color.svg"

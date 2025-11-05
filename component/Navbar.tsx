@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import Sidebar from "./SideBar";
+import SearchBar from "./SearchBar";
 
 export default function Navbar() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -39,7 +40,7 @@ export default function Navbar() {
         {/* Menu (mobile) */}
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="p-2 hover:bg-white/10 rounded-full -shrink-0 "
+          className="p-2 cursor-pointer hover:bg-white/10 rounded-full -shrink-0 "
         >
           <Menu size={22} />
         </button>
@@ -76,22 +77,11 @@ export default function Navbar() {
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
       {/* 🔹 Middle: Search Bar (full-width on mobile, centered on md+) */}
-      <div
-        className="
-          w-full md:w-[55%] lg:w-[40%]
-          bg-white text-gray-800 rounded-full
-          px-3 py-2 flex items-center shadow-sm
-          focus-within:ring-2 focus-within:ring-[#BBEB75]
-          transition order-3 md:order-2
-        "
-      >
-        <input
-          type="text"
-          placeholder="Search for Grocery, Stores, Vegetable or Meat"
-          className="w-full bg-transparent text-xs sm:text-sm md:text-base outline-none px-2 placeholder-gray-500"
-        />
-        <Search className="text-gray-500" size={18} />
-      </div>
+     {/* 🔹 Search Component */}
+<div className="order-3 md:order-2 w-full md:w-[55%] lg:w-[40%]">
+  <SearchBar />
+</div>
+
 
       {/* 🔹 Right: Promo + Cart + Avatar (desktop only) */}
       <div
@@ -112,7 +102,7 @@ export default function Navbar() {
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsCartOpen(true)}
-          className="relative bg-white text-black p-3 rounded-full shadow-md hover:bg-[#b2d16f] transition"
+          className="relative cursor-pointer bg-white text-black p-3 rounded-full shadow-md hover:bg-[#b2d16f] transition"
         >
           <ShoppingCart size={20} />
           <span className="absolute -top-1 -right-1 bg-[#074E46] text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
@@ -121,10 +111,10 @@ export default function Navbar() {
         </motion.button>
 
         {/* Avatar */}
-        <img
+        <img  onClick={() => setIsSidebarOpen(true)}
           src="https://i.pravatar.cc/40"
           alt="user"
-          className="w-9 h-9 rounded-full border border-white object-cover"
+          className="w-9 cursor-pointer h-9 rounded-full border border-white object-cover"
         />
       </div>
 

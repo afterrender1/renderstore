@@ -39,8 +39,14 @@ export default function Cart({ isOpen, onClose }: CartProps) {
 
   // ✅ Checkout handler
   const handleCheckout = async () => {
+        setLoading(true)
+    
     if (!user) {
+        setLoading(true)
+
       setShowAuthModal(true);
+        setLoading(false)
+
       return;
     }
 
@@ -66,7 +72,6 @@ export default function Cart({ isOpen, onClose }: CartProps) {
       const data = await res.json();
 
       if (data?.url) {
-        setLoading(true)
         window.location.href = data.url;
       } else {
         console.error("Checkout failed:", data);
@@ -108,7 +113,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
               >
                 <BaggageClaim color="#BBEB75" /> Your Cart
               </h2>
-              <button onClick={onClose} className="p-2 rounded-full hover:bg-white/10 transition">
+              <button onClick={onClose} className="p-2 cursor-pointer rounded-full hover:bg-white/10 transition">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -203,7 +208,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={handleCheckout}
-                className="w-full bg-[#074E46] text-white flex justify-center  py-4 rounded-xl font-semibold text-lg hover:bg-[#0a5a4f] transition"
+                className="w-full bg-[#074E46] text-white flex justify-center cursor-pointer py-4 rounded-xl font-semibold text-lg hover:bg-[#0a5a4f] transition"
                 style={{ fontFamily: "var(--font-fredoka)" }}
               >
                 Proceed to Checkout → {loading && <LoaderCircle className="animate-spin ml-2"/>}
