@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import { addToCart, increaseQty, decreaseQty } from "@/app/redux/CartSlice";
 
-// ✅ Electronics Product Type
+// ✅ Product Type
 type Product = {
   id: string;
   title: string;
@@ -62,46 +62,6 @@ const electronics: Product[] = [
     category: "electronics",
     description: "Ergonomic RGB gaming mouse with adjustable DPI.",
   },
-  {
-    id: "elec-6",
-    title: "Mechanical Keyboard",
-    image: "/images/electronics/keyboard.png",
-    price: 119.99,
-    category: "electronics",
-    description: "RGB backlit mechanical keyboard with blue switches.",
-  },
-  {
-    id: "elec-7",
-    title: "Laptop Stand",
-    image: "/images/electronics/laptopstand.png",
-    price: 34.99,
-    category: "electronics",
-    description: "Adjustable aluminum stand for laptops and tablets.",
-  },
-  {
-    id: "elec-8",
-    title: "Power Bank 20000mAh",
-    image: "/images/electronics/powerbank.png",
-    price: 39.99,
-    category: "electronics",
-    description: "Fast-charging power bank for mobile and tablets.",
-  },
-  {
-    id: "elec-9",
-    title: "HD Webcam",
-    image: "/images/electronics/hdwebcam.png",
-    price: 69.99,
-    category: "electronics",
-    description: "1080p webcam with built-in microphone for streaming.",
-  },
-  {
-    id: "elec-10",
-    title: "Wireless Charger Pad",
-    image: "/images/electronics/wirelesscharger.png",
-    price: 24.99,
-    category: "electronics",
-    description: "Fast wireless charging pad compatible with all Qi devices.",
-  },
 ];
 
 export default function ElectronicsPage() {
@@ -115,17 +75,15 @@ export default function ElectronicsPage() {
   };
 
   const getQuantity = (id: string) => {
-    //@ts-ignore
+    // @ts-ignore
     const item = cartItems.find((item) => item.id === id);
     return item ? item.quantity : 0;
   };
 
   const handleAdd = (product: Product) => {
     dispatch(
-      //@ts-ignore
+      // @ts-ignore
       addToCart({
-      //@ts-ignore
-
         id: product.id,
         title: product.title,
         price: product.price,
@@ -136,12 +94,12 @@ export default function ElectronicsPage() {
   };
 
   const handleIncrease = (id: string) => {
-    //@ts-ignore
+    // @ts-ignore
     dispatch(increaseQty(id));
   };
 
   const handleDecrease = (id: string) => {
-    //@ts-ignore
+    // @ts-ignore
     dispatch(decreaseQty(id));
   };
 
@@ -156,42 +114,37 @@ export default function ElectronicsPage() {
         variants={fadeZoomIn}
         transition={{ duration: 0.8, ease: "easeOut" }}
         style={{ clipPath: "ellipse(150% 90% at 50% 0%)" }}
-        className="bg-[#074E46] select-none mt-5 text-white 
-        rounded-t-4xl flex flex-col-reverse md:flex-row items-center justify-between 
-        px-3 xs:px-4 sm:px-6 md:px-12 lg:px-20 2xl:px-32 
-        py-6 xs:py-8 sm:py-10 md:py-16 mx-2 sm:mx-4 md:mx-8 lg:mx-18  relative overflow-hidden"
+        className="bg-[#074E46] text-white mt-5 rounded-t-4xl
+        flex flex-col-reverse md:flex-row items-center justify-between 
+        px-4 sm:px-8 md:px-12 lg:px-20 2xl:px-32 py-10 md:py-16 
+        mx-2 sm:mx-4 md:mx-8 lg:mx-16 overflow-hidden"
       >
+        {/* Left Content */}
         <motion.div
           variants={fadeZoomIn}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="relative z-10 w-full md:w-1/2 space-y-4 text-center md:text-left"
+          className="w-full md:w-1/2 text-center md:text-left space-y-4"
         >
-          <h1
-            className="text-xl xs:text-2xl sm:text-3xl md:text-5xl font-extrabold leading-snug"
-            style={{ fontFamily: "var(--font-fredoka)" }}
-          >
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold leading-snug font-fredoka">
             Explore Latest Electronics
           </h1>
-          <p
-            className="text-white/80 text-xs xs:text-sm sm:text-base max-w-md mx-auto md:mx-0"
-            style={{ fontFamily: "var(--font-fredoka)" }}
-          >
+          <p className="text-white/80 text-sm sm:text-base max-w-md mx-auto md:mx-0 font-fredoka">
             Upgrade your setup with our top tech picks — from gadgets to accessories.
           </p>
         </motion.div>
 
+        {/* Right Image */}
         <motion.div
           variants={fadeZoomIn}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="relative z-10 mt-8 md:mt-0 w-full md:w-1/2 flex justify-center"
+          className="relative mt-8 md:mt-0 w-full md:w-1/2 flex justify-center"
         >
-          <div className="relative w-[200px] xs:w-[280px] sm:w-[400px] md:w-[500px] lg:w-[590px] h-40 xs:h-[220px] sm:h-[280px] md:h-[340px] lg:h-[380px]">
+          <div className="relative w-[200px] sm:w-[300px] md:w-[450px] lg:w-[550px] h-[180px] sm:h-60 md:h-80 lg:h-[360px]">
             <Image
               src="/images/electronic.png"
               alt="Electronics Hero"
-              height={900}
-              width={900}
-              className="object-cover rounded-2xl"
+              fill
+              className="object-contain rounded-2xl"
               priority
             />
           </div>
@@ -199,29 +152,28 @@ export default function ElectronicsPage() {
       </motion.section>
 
       {/* 🛒 Product Section */}
-      <section className="px-3 xs:px-4 sm:px-6 md:px-12 lg:px-20 2xl:px-32 py-10 select-none">
-        <h2
-          className="text-xl xs:text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center sm:text-left"
-          style={{ fontFamily: "var(--font-fredoka)" }}
-        >
+      <section className="px-4 sm:px-8 md:px-12 lg:px-20 2xl:px-32 py-12 bg-white">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-8 text-center font-fredoka">
           Featured Electronics
         </h2>
 
         {loading ? (
-          <div className="flex flex-col items-center justify-center col-span-full text-gray-600 text-lg h-[50vh]">
-            <LoaderCircle size={60} className="animate-spin text-[#0A2540]" />
-            <p className="mt-4 text-xl sm:text-2xl font-bold text-[#0A2540]">
+          <div className="flex flex-col items-center justify-center text-gray-600 text-lg h-[50vh]">
+            <LoaderCircle size={60} className="animate-spin text-[#074E46]" />
+            <p className="mt-4 text-xl sm:text-2xl font-bold text-[#074E46]">
               Loading...
             </p>
           </div>
         ) : (
           <div
-            className="grid gap-4 xs:gap-5 sm:gap-6 
-            grid-cols-[repeat(auto-fit,minmax(180px,1fr))] 
-            sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] 
-            md:grid-cols-[repeat(auto-fit,minmax(220px,1fr))] 
-            lg:grid-cols-[repeat(auto-fit,minmax(240px,1fr))] 
-            xl:grid-cols-[repeat(auto-fit,minmax(260px,1fr))]"
+            className="
+              grid gap-6 sm:gap-8
+              grid-cols-2
+              sm:grid-cols-3
+              lg:grid-cols-4
+              xl:grid-cols-5
+              justify-items-center
+            "
           >
             {electronics.map((product, index) => {
               const quantity = getQuantity(product.id);
@@ -232,41 +184,36 @@ export default function ElectronicsPage() {
                   initial="hidden"
                   animate="visible"
                   transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="bg-white select-none rounded-t-xl rounded-b-[10%] 
-                  hover:shadow-md transition flex flex-col items-center justify-between 
-                  pb-6 pt-4 h-[340px] xs:h-[360px] sm:h-[380px] md:h-[400px]"
-                  style={{ clipPath: "ellipse(150% 97% at 50% 0%)" }}
+                  className="bg-white border border-gray-100 rounded-xl hover:shadow-lg transition 
+                  flex flex-col items-center justify-between w-full max-w-[220px] sm:max-w-60 md:max-w-[260px] 
+                  p-4 sm:p-5 h-[340px] sm:h-[380px]"
                 >
                   {/* Image */}
                   <Link
                     href={`/product/${product.id}`}
-                    className="relative w-full flex justify-center items-center cursor-pointer h-[150px] xs:h-[170px] sm:h-[190px]"
+                    className="w-full flex justify-center items-center h-[150px] sm:h-[180px] mb-2"
                   >
                     <Image
                       src={product.image}
                       alt={product.title}
-                      width={160}
-                      height={160}
-                      className="object-contain rounded-xl max-h-40"
+                      width={150}
+                      height={150}
+                      className="object-contain"
                     />
                   </Link>
 
                   {/* Info */}
-                  <div className="flex flex-col items-center justify-between h-[120px]">
+                  <div className="text-center flex flex-col items-center justify-between grow">
                     <h3
-                      className="text-center font-semibold text-gray-800 text-sm sm:text-base mb-1 truncate w-[90%]"
-                      style={{ fontFamily: "var(--font-fredoka)" }}
+                      className="font-semibold text-gray-800 text-sm sm:text-base truncate w-[90%]"
                       title={product.title}
                     >
                       {product.title}
                     </h3>
-                    <p className="text-gray-500 text-xs sm:text-sm capitalize">
+                    <p className="text-gray-500 text-xs sm:text-sm capitalize mt-1">
                       {product.category}
                     </p>
-                    <span
-                      className="text-xl font-bold text-gray-800 mb-2"
-                      style={{ fontFamily: "var(--font-montserrat)" }}
-                    >
+                    <span className="text-lg sm:text-xl font-bold text-gray-800 mt-2 mb-3">
                       ${product.price}
                     </span>
                   </div>
@@ -308,7 +255,7 @@ export default function ElectronicsPage() {
                               e.stopPropagation();
                               handleDecrease(product.id);
                             }}
-                            className="cursor-pointer text-gray-700 font-bold hover:scale-110 transition"
+                            className="text-gray-700 font-bold hover:scale-110 transition"
                           >
                             <Minus />
                           </button>
@@ -320,7 +267,7 @@ export default function ElectronicsPage() {
                               e.stopPropagation();
                               handleIncrease(product.id);
                             }}
-                            className="cursor-pointer text-gray-700 font-bold hover:scale-110 transition"
+                            className="text-gray-700 font-bold hover:scale-110 transition"
                           >
                             <Plus />
                           </button>
