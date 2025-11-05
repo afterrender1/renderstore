@@ -112,7 +112,7 @@ export default function AllProductsPage() {
         animate="visible"
         variants={fadeZoomIn}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="bg-[#074E46] mt-5 text-white rounded-t-[2rem] mx-2 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 2xl:mx-48 flex flex-col items-center justify-center px-4 sm:px-6 py-10"
+        className="bg-[#074E46] mt-5 text-white rounded-t-4xl mx-2 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 2xl:mx-48 flex flex-col items-center justify-center px-4 sm:px-6 py-10"
       >
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold font-fredoka">All Products</h1>
         <p className="text-white/80 mt-3 font-fredoka text-center max-w-2xl text-sm sm:text-base md:text-lg">
