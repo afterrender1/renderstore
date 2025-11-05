@@ -113,7 +113,7 @@ export default function GroceryCategories() {
               {/* Right side image or icon */}
               <div className="flex items-end justify-center mt-1 sm:mt-2">
                 {cat.image ? (
-                  <div className="relative w-[50px] h-[50px] sm:w-[65px] sm:h-[65px] md:w-[80px] md:h-[80px] lg:w-[85px] lg:h-[85px]">
+                  <div className="relative w-[50px] h-[50px] sm:w-[65px] sm:h-[65px] md:w-20 md:h-20 lg:w-[85px] lg:h-[85px]">
                     <Image
                       src={cat.image}
                       alt={cat.title}
